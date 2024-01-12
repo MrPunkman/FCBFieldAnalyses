@@ -20,7 +20,7 @@ class ExperimentDescriptionDataClass:
     measurementDate: str
     measurementYear: int
 
-
+## 100A Ref 2017_02_07 100 A #####################################################################################
 RefExperiment20170207 = ExperimentDescriptionDataClass(100,
                                                 r'C:\Users\freiseml\Nextcloud2\00-These Leo\99-Travaux Lyes\Mesures CEA_2D\07_02_2017\Caract_Bruit\\',
                                                 "champ_Aux_on_PD.lvm",
@@ -35,25 +35,48 @@ RefExperiment20170207 = ExperimentDescriptionDataClass(100,
                                                 "07.02.2017",
                                                 2017)
 
+## 100A Stoichiometry 1.3 2017_02_09 100 A #####################################################################################
+Stoichio13Experiment20170209 = ExperimentDescriptionDataClass(100,
+                                                r'C:\Users\freiseml\Nextcloud2\00-These Leo\99-Travaux Lyes\Mesures CEA_2D\09_02_2017\Sto2_100A\\',
+                                                "bruitPD.lvm",
+                                                "bruitPC.lvm",
+                                                "bruitPG.lvm",
+                                                r"C:\Users\freiseml\Nextcloud2\00-These Leo\99-Travaux Lyes\Mesures CEA_2D\09_02_2017\Sto13_100A\\",
+                                                '100 A PD sto air 1,3.lvm',
+                                                '100 A PC sto air 1,3-b.lvm',
+                                                '100 A PG sto air 1,3.lvm',
+                                                100,
+                                                "Stoichiometry 1.3 100 A",
+                                                "09.02.2017",
+                                                2017)
 
+## 100A Stoichiometry 1.5 2017_02_09 100 A #####################################################################################
+Stoichio15Experiment20170209 = ExperimentDescriptionDataClass(100,
+                                                r'C:\Users\freiseml\Nextcloud2\00-These Leo\99-Travaux Lyes\Mesures CEA_2D\09_02_2017\Sto2_100A\\',
+                                                "bruitPD.lvm",
+                                                "bruitPC.lvm",
+                                                "bruitPG.lvm",
+                                                r"C:\Users\freiseml\Nextcloud2\00-These Leo\99-Travaux Lyes\Mesures CEA_2D\09_02_2017\Sto15_100A\\",
+                                                '100 A PD sto air 1,5.lvm',
+                                                '100 A PC sto air 1,5.lvm',
+                                                '100 A PG sto air 1,5.lvm',
+                                                100,
+                                                "Stoichiometry 1.5 100 A",
+                                                "09.02.2017",
+                                                2017)
 
-# print(RefExperiment20170207.measurementYear)
+## 100A Stoichiometry 2.0 2017_02_09 100 A #####################################################################################
+Stoichio20Experiment20170209 = ExperimentDescriptionDataClass(100,
+                                                r'C:\Users\freiseml\Nextcloud2\00-These Leo\99-Travaux Lyes\Mesures CEA_2D\09_02_2017\Sto2_100A\\',
+                                                "bruitPD.lvm",
+                                                "bruitPC.lvm",
+                                                "bruitPG.lvm",
+                                                r"C:\Users\freiseml\Nextcloud2\00-These Leo\99-Travaux Lyes\Mesures CEA_2D\09_02_2017\Sto2_100A\\",
+                                                '100 A PD.lvm',
+                                                '100 A PC.lvm',
+                                                '100 A PG.lvm',
+                                                100,
+                                                "Stoichiometry 2.0 100 A",
+                                                "09.02.2017",
+                                                2017)
 
-
-
-# scaleTo = 100
-
-# noiseBFieldPath = r'C:\Users\freiseml\Nextcloud2\00-These Leo\99-Travaux Lyes\Mesures CEA_2D\07_02_2017\Caract_Bruit\\'
-# filenamenoiseAV = "champ_Aux_on_PD.lvm"
-# filenamenoiseCenter = "champ_Aux_on_PC.lvm"
-# filenamenoiseAR = "champ_Aux_on_PG.lvm"
-
-# bFieldPath = r'C:\Users\freiseml\Nextcloud2\00-These Leo\99-Travaux Lyes\Mesures CEA_2D\07_02_2017\Stochio\\'
-# filenameAV = 'champ_I100A_PD.lvm'                     ###!!!!!!!!-----------> Change here <-----------!!!!!!!!!!!!!!!!
-# filenameC = 'champ_I100A_PC.lvm'                  ###!!!!!!!!-----------> Change here <-----------!!!!!!!!!!!!!!!!
-# filenameAR = 'champ_I100A_PG.lvm'                     ###!!!!!!!!-----------> Change here <-----------!!!!!!!!!!!!!!!!
-
-# measuredCurrent = 100
-# measurementName = "Reference 100 A"
-# measurementDate = "07.02.2017"
-# measurementYear = 2017

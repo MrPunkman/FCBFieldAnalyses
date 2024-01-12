@@ -45,8 +45,8 @@ class Investigation:
             ylimBFieldUp = 100
             ylimBFieldDown = -100
         elif self.FaultExperiment.year == 2017:
-            ylimBFieldUp = 350
-            ylimBFieldDown = -350
+            ylimBFieldUp = 40
+            ylimBFieldDown = -40
         # print("Visualization of healthy, faulty and diff Field")
         f2 = plt.subplots(1, 1, figsize=set_size(), sharey=True)
         plt.plot(np.multiply(self.RefExperiment.scaledField, self.FaultExperiment.arrayPlotFactor), label = "Reference Fuel Cell B-Field in $\mu$T", color = specific_colors['G2EGreen'])
@@ -75,8 +75,8 @@ class Investigation:
         plt.xlim(0,len(self.diffBField)-1)
         # plt.ylim(-10,10)
         #plt.title('Differential B-Field caused by {faulty} for {amps} A the {date}'.format(date = self.FaultExperiment.date, faulty = self.FaultExperiment.name, amps = self.FaultExperiment.scaleCurrentTo))
-        ymin = -180
-        ymax = 150  
+        ymin = -30
+        ymax = 30  
         plt.ylim((ymin,ymax))
         plt.vlines(30,ymin, ymax,'b')
         plt.vlines(60,ymin, ymax,'b')
