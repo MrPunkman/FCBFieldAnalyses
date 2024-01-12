@@ -234,7 +234,8 @@ class Experiment:
         else:
             self.scaleFieldFactor = self.scaleCurrentTo / self.meanCurrent
             # print(self.scaleFieldFactor)
-            self.scaledField = np.multiply(self.measuredCleanField, self.scaleFieldFactor)
+            # self.scaledField = np.multiply(self.measuredCleanField, self.scaleFieldFactor)
+            self.scaledField = np.multiply(self.measuredCleanField, 1)
 
         ## Plot B-Field Mean values on sensors
         self.plotFieldMeasurementDataAndSavePlots()
