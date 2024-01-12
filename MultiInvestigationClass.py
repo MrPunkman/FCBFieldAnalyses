@@ -79,7 +79,7 @@ class MultiInvestigation:
         - SensorsOfInterest:  np.linspace(2, 32, 30, dtype=int), dataSet = testExperiment.bFieldDataC, ringsStd = [0, 0.25,  0.5, 0.75], ringsData = [-100, -50, 0, 50, 100]
         titleInformationData = "With(/Without) noise"
         ''' 
-        ringsData = [-100, -50, 0, 50, 100]
+        ringsData = [-15, -5, 0, 5, 15]
         ## plot sensor circle with errorbars:
         # Calculate standard deviation of each Sensor:
         
@@ -206,7 +206,7 @@ class MultiInvestigation:
 
             npos = npos + 1
     @deprecated("This Function uses the calculation of the difference between two absolute fields. Use plotCompFieldsOfExperimentsWithoutNoise instead")
-    def plotCompFieldsOfExperimentsDirect(self):  #plotNbLayer = 1 , plotU = True, plotV = bool, 
+    def plotCompFieldsOfExperimentsDirect(self):  
         ''' Plot for each layer array position Bu above Bw and experiment together --> 3 x 2 plots with each two colors
         - interest is to determine outliers with a visual method
         - SensorsOfInterest:  np.linspace(2, 32, 30, dtype=int), dataSet = testExperiment.bFieldDataC, ringsStd = [0, 0.25,  0.5, 0.75], ringsData = [-100, -50, 0, 50, 100]
@@ -257,7 +257,7 @@ class MultiInvestigation:
            loc="upper right") 
         fig.savefig(self.Experiment1.FaultExperiment.bFieldPath + "MulInvestigationCompAllDirect.pdf")       
 
-    def plotCompFieldsOfExperimentsWithoutNoise(self):  #plotNbLayer = 1 , plotU = True, plotV = bool, 
+    def plotCompFieldsOfExperimentsWithoutNoise(self):  
         ''' Plot for each layer array position Bu above Bw and experiment together --> 3 x 2 plots with each two colors
         - interest is to determine outliers with a visual method
         - SensorsOfInterest:  np.linspace(2, 32, 30, dtype=int), dataSet = testExperiment.bFieldDataC, ringsStd = [0, 0.25,  0.5, 0.75], ringsData = [-100, -50, 0, 50, 100]
@@ -343,25 +343,26 @@ class MultiInvestigation:
         self.Experiment2 = Experiment2
         self.Experiment3 = Experiment3
         self.passSensorMeasurementsWithoutNoise()
+        self.plotPolarCompFieldsOfExperiments()
         self.plotCompFieldsOfExperimentsWithoutNoise()
         
 
 # for testing:
-experiment1DataClass = RefExperiment20170207
+experiment1DataClass = Ref50Experiment20170207
 experiment1Def = Exp(experiment1DataClass.measurementYear, experiment1DataClass.measurementName, experiment1DataClass.measurementDate, experiment1DataClass.measuredCurrent, experiment1DataClass.scaleCurrentTo,
                                           experiment1DataClass.noiseBFieldPath, experiment1DataClass.fileNameNoiseAV, experiment1DataClass.fileNameNoiseCenter, experiment1DataClass.fileNameNoiseAR, 
                                           experiment1DataClass.bFieldPath, experiment1DataClass.fileNameAV, experiment1DataClass.fileNameC, experiment1DataClass.fileNameAR)
-experiment2DataClass = Stoichio13Experiment20170209
+experiment2DataClass = Hum30Experiment20170208
 experiment2Def = Exp(experiment2DataClass.measurementYear, experiment2DataClass.measurementName, experiment2DataClass.measurementDate, experiment2DataClass.measuredCurrent, experiment2DataClass.scaleCurrentTo,
                                           experiment2DataClass.noiseBFieldPath, experiment2DataClass.fileNameNoiseAV, experiment2DataClass.fileNameNoiseCenter, experiment2DataClass.fileNameNoiseAR, 
                                           experiment2DataClass.bFieldPath, experiment2DataClass.fileNameAV, experiment2DataClass.fileNameC, experiment2DataClass.fileNameAR)
 
-experiment3DataClass = Stoichio15Experiment20170209
+experiment3DataClass = Hum50Experiment20170208
 experiment3Def = Exp(experiment3DataClass.measurementYear, experiment3DataClass.measurementName, experiment3DataClass.measurementDate, experiment3DataClass.measuredCurrent, experiment3DataClass.scaleCurrentTo,
                                           experiment3DataClass.noiseBFieldPath, experiment3DataClass.fileNameNoiseAV, experiment3DataClass.fileNameNoiseCenter, experiment3DataClass.fileNameNoiseAR, 
                                           experiment3DataClass.bFieldPath, experiment3DataClass.fileNameAV, experiment3DataClass.fileNameC, experiment3DataClass.fileNameAR)
 
-experiment4DataClass = Stoichio20Experiment20170209
+experiment4DataClass = Hum80Experiment20170208
 experiment4Def = Exp(experiment4DataClass.measurementYear, experiment4DataClass.measurementName, experiment4DataClass.measurementDate, experiment4DataClass.measuredCurrent, experiment4DataClass.scaleCurrentTo,
                                           experiment4DataClass.noiseBFieldPath, experiment4DataClass.fileNameNoiseAV, experiment4DataClass.fileNameNoiseCenter, experiment4DataClass.fileNameNoiseAR, 
                                           experiment4DataClass.bFieldPath, experiment4DataClass.fileNameAV, experiment4DataClass.fileNameC, experiment4DataClass.fileNameAR)

@@ -21,7 +21,7 @@ class ExperimentDescriptionDataClass:
     measurementYear: int
 
 ## 100A Ref 2017_02_07 100 A #####################################################################################
-RefExperiment20170207 = ExperimentDescriptionDataClass(100,
+Ref100Experiment20170207 = ExperimentDescriptionDataClass(100,
                                                 r'C:\Users\freiseml\Nextcloud2\00-These Leo\99-Travaux Lyes\Mesures CEA_2D\07_02_2017\Caract_Bruit\\',
                                                 "champ_Aux_on_PD.lvm",
                                                 "champ_Aux_on_PC.lvm",
@@ -76,7 +76,69 @@ Stoichio20Experiment20170209 = ExperimentDescriptionDataClass(100,
                                                 '100 A PC.lvm',
                                                 '100 A PG.lvm',
                                                 100,
-                                                "Stoichiometry 2.0 100 A",
+                                                "Stoichiometry 2.0 re 100 A",
                                                 "09.02.2017",
                                                 2017)
 
+
+## 50A Ref 2017_02_07 #####################################################################################
+Ref50Experiment20170207 = ExperimentDescriptionDataClass(50,
+                                                r'C:\Users\freiseml\Nextcloud2\00-These Leo\99-Travaux Lyes\Mesures CEA_2D\07_02_2017\Caract_Bruit\\',
+                                                "champ_Aux_on_PD.lvm",
+                                                "champ_Aux_on_PC.lvm",
+                                                "champ_Aux_on_PG.lvm",
+                                                r'C:\Users\freiseml\Nextcloud2\00-These Leo\99-Travaux Lyes\Mesures CEA_2D\07_02_2017\Caract_Bruit\\',
+                                                'champ_I50A_PD.lvm',
+                                                'champ_I50A_PC.lvm',
+                                                "champ_I50A_PG.lvm",
+                                                50,
+                                                "Reference 50 A",
+                                                "08.02.2017",
+                                                2017)
+
+
+
+## 50 A Humidity 30% 2017_02_08 #####################################################################################
+Hum30Experiment20170208 = ExperimentDescriptionDataClass(50,
+                                                r'C:\Users\freiseml\Nextcloud2\00-These Leo\99-Travaux Lyes\Mesures CEA_2D\08_02_2017\Evolution_bruit\\',
+                                                "champ_Aux_on_PD.lvm",
+                                                "champ_Aux_on_PC.lvm",
+                                                "champ_Aux_on_PG.lvm",
+                                                r"C:\Users\freiseml\Nextcloud2\00-These Leo\99-Travaux Lyes\Mesures CEA_2D\08_02_2017\Assechement\RH30_I50A\\",
+                                                'champ_Assech_RH30_I50A_PD.lvm',
+                                                'champ_Assech_RH30_I50A_PC.lvm',
+                                                'champ_Assech_RH30_I50A_PG.lvm',
+                                                50,
+                                                "Humidity 30 50 A",
+                                                "08.02.2017",
+                                                2017)
+
+## 50 A Humidity 50% 2017_02_08 #####################################################################################
+Hum50Experiment20170208 = ExperimentDescriptionDataClass(50,
+                                                r'C:\Users\freiseml\Nextcloud2\00-These Leo\99-Travaux Lyes\Mesures CEA_2D\08_02_2017\Evolution_bruit\\',
+                                                "champ_Aux_on_PD.lvm",
+                                                "champ_Aux_on_PC.lvm",
+                                                "champ_Aux_on_PG.lvm",
+                                                r"C:\Users\freiseml\Nextcloud2\00-These Leo\99-Travaux Lyes\Mesures CEA_2D\08_02_2017\Assechement\RH50_I50A\\",
+                                                'champ_Assech_RH50_I50A_PG.lvm',
+                                                'champ_Assech_RH50_I50A_PC.lvm',
+                                                'champ_Assech_RH50_I50A_PG.lvm',
+                                                50,
+                                                "Humidity 50 50 A",
+                                                "08.02.2017",
+                                                2017)
+
+## 50 A Humidity 80% 2017_02_08 100 A #####################################################################################
+Hum80Experiment20170208 = ExperimentDescriptionDataClass(50,
+                                                r'C:\Users\freiseml\Nextcloud2\00-These Leo\99-Travaux Lyes\Mesures CEA_2D\08_02_2017\Evolution_bruit\\',
+                                                "champ_Aux_on_PD.lvm",
+                                                "champ_Aux_on_PC.lvm",
+                                                "champ_Aux_on_PG.lvm",
+                                                r"C:\Users\freiseml\Nextcloud2\00-These Leo\99-Travaux Lyes\Mesures CEA_2D\08_02_2017\Assechement\\",
+                                                'champ_Assech_RH80_I50A_PD.lvm',
+                                                'champ_Assech_RH80_I50A_PC.lvm',
+                                                'champ_Assech_RH80_I50A_PC.lvm',
+                                                50,
+                                                "Humidity 80 Re 50 A",
+                                                "08.02.2017",
+                                                2017)
