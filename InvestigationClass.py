@@ -14,10 +14,10 @@ class Investigation:
     '''Class to handle two experiments and get the differential B-Field'''
     def readSensorMatrix(self):
         # read Sensor file
-        self.sensorPath = r'C:\Users\freiseml\Nextcloud\01_France\04_Stage\00-Travail\03-PAC\00-Dataplots\\'
+        self.sensorPath = r'C:\Users\freiseml\Nextcloud2\00-These Leo\00-Travail\03-PAC\00-Dataplots\\'
         self.sensorFilename = "PYTHON_GENEPAC_Sensors_3_Plan_AV_C_AR.txt"
         sensorMatrix = pd.read_csv(self.sensorPath + self.sensorFilename, sep="	", header = None)
-        print(sensorMatrix)
+        # print(sensorMatrix)
         self.sensoMatrix = np.asarray(sensorMatrix)
         return self.sensoMatrix
     
@@ -31,7 +31,7 @@ class Investigation:
             self.sensorsOfInterestArray [i, 0:6] = self.sensoMatrix[line, :]
             self.sensorsOfInterestArray [i, -1] = sensorData[line]*self.FaultExperiment.arrayScaleFactor
 
-        print(self.sensorsOfInterestArray)
+        # print(self.sensorsOfInterestArray)
         # Save as .txt
         np.savetxt(self.savepath+'SensorPositionsWithFields.txt', np.multiply(self.sensorsOfInterestArray,1), delimiter='\t')  
         return self.sensorsOfInterestArray
@@ -47,7 +47,7 @@ class Investigation:
         elif self.FaultExperiment.year == 2017:
             ylimBFieldUp = 350
             ylimBFieldDown = -350
-        print("Visualization of healthy, faulty and diff Field")
+        # print("Visualization of healthy, faulty and diff Field")
         f2 = plt.subplots(1, 1, figsize=set_size(), sharey=True)
         plt.plot(np.multiply(self.RefExperiment.scaledField, self.FaultExperiment.arrayPlotFactor), label = "Reference Fuel Cell B-Field in $\mu$T", color = specific_colors['G2EGreen'])
         plt.plot(np.multiply(self.FaultExperiment.scaledField, self.FaultExperiment.arrayPlotFactor), label = "Investigated Fuel Cell B-Field in $\mu$T", color = specific_colors['FaultyCell'])
@@ -69,7 +69,7 @@ class Investigation:
 
     def plotDiffField(self):
         # vizualize both, the faulty B-Field
-        print("Visualization of diff Field")
+        # print("Visualization of diff Field")
         f3 = plt.subplots(1, 1, figsize=set_size(), sharey=True)
         plt.plot(np.multiply(self.diffBField,self.FaultExperiment.arrayPlotFactor), label = "Dif B-Field in $\mu$T", color = specific_colors['MPM_red'])
         plt.xlim(0,len(self.diffBField)-1)
@@ -90,7 +90,7 @@ class Investigation:
 
     def plotInvestiagtedField(self):
         # vizualize the faulty B-Field
-        print("Visualization of Investigated diff Field")
+        # print("Visualization of Investigated diff Field")
         f4 = plt.subplots(1, 1, figsize=set_size(), sharey=True)
         # plt.tight_layout()
         plt.plot(np.multiply(self.sensorsOfInterestArray[:,-1],self.FaultExperiment.arrayDiffFieldFactor), label = " Investigated dif B-Field in $\mu$T", color = specific_colors['MPM_red'])
@@ -215,7 +215,7 @@ class Investigation:
 
     def diffFieldOf180sensorsWithNOISE(self):
         # vizualize both, the faulty B-Field
-        print("Visualization of diff Field")
+        # print("Visualization of diff Field")
         f3 = plt.subplots(1, 1, figsize=set_size(), sharey=True)
         errorGraph = np.multiply((np.multiply(self.directDifferentialField,1E6) - np.multiply(self.diffBField,self.FaultExperiment.arrayPlotFactor))/np.multiply(self.directDifferentialField,1E6),100)
         plt.plot(np.multiply(self.directDifferentialField,1E6), label = "Direct Dif B-Field in $\mu$T without Noise subtraction", color = specific_colors['MPM_red'])

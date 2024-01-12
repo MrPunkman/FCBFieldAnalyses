@@ -220,20 +220,20 @@ class Experiment:
             self.stackGlobalTensionAR = self.bFieldDataAR.loc[
                 :, self.stackGlobalTensionName
             ]
-            print(self.stackGlobalTensionC * self.stackGlobalTensionFactor)
+            # print(self.stackGlobalTensionC * self.stackGlobalTensionFactor)
 
         self.stackGlobalCurrent = self.bFieldDataAV.loc[:, self.stackGlobalCurrentName]
-        print(self.stackGlobalCurrent)
+        # print(self.stackGlobalCurrent)
 
         self.meanCurrent = self.stackGlobalCurrent.mean() * self.scaleVCurrentToAmps
-        print(self.meanCurrent)
+        # print(self.meanCurrent)
 
         if self.year == 2017:
             self.scaledField = np.multiply(self.measuredCleanField, 1)
         
         else:
             self.scaleFieldFactor = self.scaleCurrentTo / self.meanCurrent
-            print(self.scaleFieldFactor)
+            # print(self.scaleFieldFactor)
             self.scaledField = np.multiply(self.measuredCleanField, self.scaleFieldFactor)
 
         ## Plot B-Field Mean values on sensors
@@ -242,41 +242,41 @@ class Experiment:
     # ____________________________________________________________Start new Functions_____________________________________________________________________________________________
     ## for noise treatment: subtract vector with 60 entries
     def clearNoiseFromBFieldMeasurements(self, df, subtractor):
-        print("Clean Noise from measurements start")
+        # print("Clean Noise from measurements start")
         c = 0
         result = pd.DataFrame(columns=self.sensorNames[2:62])
         for i in range(2, 62):
             result.iloc[:, c] = df.iloc[:, i].sub(subtractor[c])
             c = c + 1
-        print("Clean Noise from measurements end")
+        # print("Clean Noise from measurements end")
         return result
 
     ## calculate B-Field mean values of a Noise frame
     def BFieldMeanValueNoise(self, df):
-        print("Calculate Mean values start")
+        # print("Calculate Mean values start")
         BFieldArray = np.zeros(60)
         i = 0
         for sensors in range(2, 62):
             BFieldArray[i] = df.iloc[:, sensors].mean(axis=0)
             i = i + 1
-        print("Calculate Mean values end")
+        # print("Calculate Mean values end")
         return BFieldArray
 
     ## calculate B-Field mean values of a noise-free DF
     def BFieldMeanValueClean(self, df):
-        print("Calculate Mean values noise free start")
+        # print("Calculate Mean values noise free start")
         BFieldArray = np.zeros(60)
         i = 1
         for sensors in range(0, len(BFieldArray)):
             BFieldArray[sensors] = df.iloc[:, sensors].mean(axis=0)
             i = i + 1
-        print("Calculate Mean values noise free end")
+        # print("Calculate Mean values noise free end")
         return BFieldArray
 
     def createDF(self, bFieldPath, filename):
-        """This function is to read a .lvm file and read the data without the header"""
+        # """This function is to read a .lvm file and read the data without the header"""
         ## import file and set file path
-        print("reading Data start")
+        # print("reading Data start")
         df = pd.read_csv(
             bFieldPath + filename, sep="	", skiprows=[i for i in range(0, self.skipRows)]
         )
@@ -284,7 +284,7 @@ class Experiment:
         df = df.replace(",", ".", regex=True)
         # change type to float
         df = df.astype(float)
-        print("reading Data end")
+        # print("reading Data end")
         return df
     
     def plotErrorPlotsForOneSensorLayer(self, sensorsOfInterest, titleInformationData, ringsStd = list, ringsData = list, dataSet = pd.DataFrame):  #plotNbLayer = 1 , plotU = True, plotV = bool, 
@@ -354,7 +354,7 @@ class Experiment:
         plt.savefig(self.bFieldPath + self.name[0: -11]+"_B_Field_CleanMeasured.pdf")
         self.measuredField = np.multiply(self.measuredCleanField, self.arrayDataFactor)
         # # write values to csv
-        print("Exported DataFrame to: " + self.bFieldPath + self.name[0: -11]+"_B_Field_CleanMeasured.dat")
+        # print("Exported DataFrame to: " + self.bFieldPath + self.name[0: -11]+"_B_Field_CleanMeasured.dat")
         np.savetxt(self.bFieldPath + self.name[0: -11] + "_B_Field_CleanMeasured.dat", 
                 self.measuredField,
                 delimiter =", ", 
