@@ -199,7 +199,7 @@ class Investigation:
     def compOfTwoSensors(self, sensorName, figureName: str, dataSet1: pd.DataFrame, dataSet2: pd.DataFrame, experiment1: Exp, experiment2: Exp):
         fig, (ax1, ax2) = plt.subplots(1, 2, figsize=set_size(), sharey=True)
         ax1.plot(dataSet1.loc[:,sensorName]*experiment1.arrayPlotFactor)
-        ax1.set_x
+        # ax1.set_x
         plt.xlim([0,len(dataSet1.loc[:,sensorName])])
         plt.xlabel("t (ms)")
         plt.ylabel("Magnetic Induction ($\mu$T)")
