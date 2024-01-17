@@ -5,6 +5,7 @@ import matplotlib.pyplot as plt
 from statistics import mean
 from collectAllMeasureDataInOneFile import *
 from thesis_general_imports import *
+from deprecated import deprecated
 
 # import seaborn as sns
 
@@ -168,7 +169,7 @@ class Experiment:
             np.append(self.noiseBFieldMeanvalueC, self.noiseBFieldMeanvalueAR),
         )
 
-        ## for vizualization: calculate mean value of measured B-Field with noise
+        ## for visualization: calculate mean value of measured B-Field with noise
         self.BFieldMeanvalueWithNoiseAV = self.BFieldMeanValueNoise(self.bFieldDataAV)
         self.BFieldMeanvalueWithNoiseC = self.BFieldMeanValueNoise(self.bFieldDataC)
         self.BFieldMeanvalueWithNoiseAR = self.BFieldMeanValueNoise(self.bFieldDataAR)
@@ -239,6 +240,7 @@ class Experiment:
 
         ## Plot B-Field Mean values on sensors
         self.plotFieldMeasurementDataAndSavePlots()
+        self.BFieldMeanCalcTest()
 
     # ____________________________________________________________Start new Functions_____________________________________________________________________________________________
     ## for noise treatment: subtract vector with 60 entries
@@ -251,6 +253,13 @@ class Experiment:
             c = c + 1
         # print("Clean Noise from measurements end")
         return result
+
+    ## Calculate field with: $B_mean - B_noise_mean$
+    @deprecated("This Function uses the calculation of the $B_mean - B_noise_mean$ to try to reproduce results from Lyes Ifrek. Do not USE!")
+    def BFieldMeanCalcTest(self):
+        self.BFieldDirtyAV = np.subtract(self.BFieldMeanvalueWithNoiseAV, self.noiseBFieldMeanvalueAV)
+        self.BFieldDirtyC = np.subtract(self.BFieldMeanvalueWithNoiseC, self.noiseBFieldMeanvalueC)
+        self.BFieldDirtyAR = np.subtract(self.BFieldMeanvalueWithNoiseAR, self.noiseBFieldMeanvalueAR)
 
     ## calculate B-Field mean values of a Noise frame
     def BFieldMeanValueNoise(self, df):

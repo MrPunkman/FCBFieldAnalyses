@@ -13,6 +13,7 @@ from deprecated import deprecated
 
 class MultiInvestigation:
     """"Currently the present class is used to compare 3 (three) different results as used in Lyes et al. Thesis."""
+
     @deprecated("This Function uses the calculation of the difference between two absolute fields. Use passSensorMeasurementsWithoutNoise instead")
     def passSensorMeasurementsDirect(self):
         sensorsOfInterest = 30
@@ -71,6 +72,64 @@ class MultiInvestigation:
 
             npos = npos + 1
 
+    @deprecated("This Function uses the calculation of the $B_mean - B_noise_mean$ to try to reproduce results from Lyes Ifrek. Use passSensorMeasurementsWithoutNoise instead")
+    def passSensorMeasurementsMeanNoiseDirect(self):
+        sensorsOfInterest = 30
+        sensorPosDef = np.linspace(1,30,30,dtype=int)
+
+        self.exp1DataAVBu = np.zeros((sensorsOfInterest,2))
+        self.exp2DataAVBu = np.zeros((sensorsOfInterest,2))
+        self.exp3DataAVBu = np.zeros((sensorsOfInterest,2))
+
+        self.exp1DataAVBw = np.zeros((sensorsOfInterest,2))
+        self.exp2DataAVBw = np.zeros((sensorsOfInterest,2))
+        self.exp3DataAVBw = np.zeros((sensorsOfInterest,2))
+
+        self.exp1DataCBu = np.zeros((sensorsOfInterest,2))
+        self.exp2DataCBu = np.zeros((sensorsOfInterest,2))
+        self.exp3DataCBu = np.zeros((sensorsOfInterest,2))
+
+        self.exp1DataCBw = np.zeros((sensorsOfInterest,2))
+        self.exp2DataCBw = np.zeros((sensorsOfInterest,2))
+        self.exp3DataCBw = np.zeros((sensorsOfInterest,2))
+
+        self.exp1DataARBu = np.zeros((sensorsOfInterest,2))
+        self.exp2DataARBu = np.zeros((sensorsOfInterest,2))
+        self.exp3DataARBu = np.zeros((sensorsOfInterest,2))
+        
+        self.exp1DataARBw = np.zeros((sensorsOfInterest,2))
+        self.exp2DataARBw = np.zeros((sensorsOfInterest,2))
+        self.exp3DataARBw = np.zeros((sensorsOfInterest,2))
+
+        npos = 0
+
+        for i in range(0,30):
+            self.exp1DataAVBu[npos,:] = (sensorPosDef[i], (np.subtract(self.Experiment1.FaultExperiment.BFieldDirtyAV[i], self.Experiment1.RefExperiment.BFieldDirtyAV[i])) * 1E6)
+            self.exp2DataAVBu[npos,:] = (sensorPosDef[i], (np.subtract(self.Experiment2.FaultExperiment.BFieldDirtyAV[i], self.Experiment2.RefExperiment.BFieldDirtyAV[i])) * 1E6)
+            self.exp3DataAVBu[npos,:] = (sensorPosDef[i], (np.subtract(self.Experiment3.FaultExperiment.BFieldDirtyAV[i], self.Experiment3.RefExperiment.BFieldDirtyAV[i])) * 1E6)
+
+            self.exp1DataAVBw[npos,:] = (sensorPosDef[i], (np.subtract(self.Experiment1.FaultExperiment.BFieldDirtyAV[29 + i], self.Experiment1.RefExperiment.BFieldDirtyAV[29 + i])) * 1E6)
+            self.exp2DataAVBw[npos,:] = (sensorPosDef[i], (np.subtract(self.Experiment2.FaultExperiment.BFieldDirtyAV[29 + i], self.Experiment2.RefExperiment.BFieldDirtyAV[29 + i])) * 1E6)
+            self.exp3DataAVBw[npos,:] = (sensorPosDef[i], (np.subtract(self.Experiment3.FaultExperiment.BFieldDirtyAV[29 + i], self.Experiment3.RefExperiment.BFieldDirtyAV[29 + i])) * 1E6)
+
+            self.exp1DataCBu[npos,:] = (sensorPosDef[i], (np.subtract(self.Experiment1.FaultExperiment.BFieldDirtyC[i], self.Experiment1.RefExperiment.BFieldDirtyC[i])) * 1E6)
+            self.exp2DataCBu[npos,:] = (sensorPosDef[i], (np.subtract(self.Experiment2.FaultExperiment.BFieldDirtyC[i], self.Experiment2.RefExperiment.BFieldDirtyC[i])) * 1E6)
+            self.exp3DataCBu[npos,:] = (sensorPosDef[i], (np.subtract(self.Experiment3.FaultExperiment.BFieldDirtyC[i], self.Experiment3.RefExperiment.BFieldDirtyC[i])) * 1E6)
+
+            self.exp1DataCBw[npos,:] = (sensorPosDef[i], (np.subtract(self.Experiment1.FaultExperiment.BFieldDirtyC[29 + i], self.Experiment1.RefExperiment.BFieldDirtyC[29 + i])) * 1E6)
+            self.exp2DataCBw[npos,:] = (sensorPosDef[i], (np.subtract(self.Experiment2.FaultExperiment.BFieldDirtyC[29 + i], self.Experiment2.RefExperiment.BFieldDirtyC[29 + i])) * 1E6)
+            self.exp3DataCBw[npos,:] = (sensorPosDef[i], (np.subtract(self.Experiment3.FaultExperiment.BFieldDirtyC[29 + i], self.Experiment3.RefExperiment.BFieldDirtyC[29 + i])) * 1E6)
+
+            self.exp1DataARBu[npos,:] = (sensorPosDef[i], (np.subtract(self.Experiment1.FaultExperiment.BFieldDirtyAR[i], self.Experiment1.RefExperiment.BFieldDirtyAR[i])) * 1E6)
+            self.exp2DataARBu[npos,:] = (sensorPosDef[i], (np.subtract(self.Experiment2.FaultExperiment.BFieldDirtyAR[i], self.Experiment2.RefExperiment.BFieldDirtyAR[i])) * 1E6)
+            self.exp3DataARBu[npos,:] = (sensorPosDef[i], (np.subtract(self.Experiment3.FaultExperiment.BFieldDirtyAR[i], self.Experiment3.RefExperiment.BFieldDirtyAR[i])) * 1E6)
+
+            self.exp1DataARBw[npos,:] = (sensorPosDef[i], (np.subtract(self.Experiment1.FaultExperiment.BFieldDirtyAR[29 + i], self.Experiment1.RefExperiment.BFieldDirtyAR[29 + i])) * 1E6)
+            self.exp2DataARBw[npos,:] = (sensorPosDef[i], (np.subtract(self.Experiment2.FaultExperiment.BFieldDirtyAR[29 + i], self.Experiment2.RefExperiment.BFieldDirtyAR[29 + i])) * 1E6)
+            self.exp3DataARBw[npos,:] = (sensorPosDef[i], (np.subtract(self.Experiment3.FaultExperiment.BFieldDirtyAR[29 + i], self.Experiment3.RefExperiment.BFieldDirtyAR[29 + i])) * 1E6)
+
+            npos = npos + 1
+
     # Polar plot for the evolution of the magnetic signature of a fault at 3 different measurements
     # 
     def plotPolarCompFieldsOfExperiments(self):  #plotNbLayer = 1 , plotU = True, plotV = bool, 
@@ -96,7 +155,7 @@ class MultiInvestigation:
                       + self.Experiment2.FaultExperiment.name + " " + self.Experiment2.FaultExperiment.date + " and \n" 
                       +self.Experiment3.FaultExperiment.name + " " + self.Experiment3.FaultExperiment.date)
         ax1.set_rticks(ringsData)
-        fig.savefig(self.Experiment1.FaultExperiment.bFieldPath + "MulInvestigationPolarCompAVBu.pdf")
+        fig.savefig(self.Experiment1.FaultExperiment.bFieldPath + "MulInvestigationPolarCompAVBuDiffTest.pdf")
 
         fig, ax2 = plt.subplots(1, 1, figsize=set_size(), sharey=True, subplot_kw={'projection': 'polar'})
         ax2.errorbar(theta, self.exp1DataAVBw[:,1], xerr=0, yerr=0, capsize=0.5,fmt=",", c= self.c3  )
@@ -106,7 +165,7 @@ class MultiInvestigation:
                       + self.Experiment2.FaultExperiment.name + " " + self.Experiment2.FaultExperiment.date + " and \n" 
                       +self.Experiment3.FaultExperiment.name + " " + self.Experiment3.FaultExperiment.date)
         ax2.set_rticks(ringsData)
-        fig.savefig(self.Experiment1.FaultExperiment.bFieldPath + "MulInvestigationPolarCompAVBw.pdf")
+        fig.savefig(self.Experiment1.FaultExperiment.bFieldPath + "MulInvestigationPolarCompAVBwDiffTest.pdf")
 
         fig, ax3 = plt.subplots(1, 1, figsize=set_size(), sharey=True, subplot_kw={'projection': 'polar'})
         ax3.errorbar(theta, self.exp1DataCBu[:,1], xerr=0, yerr=0, capsize=0.5,fmt=",", c= self.c3  )
@@ -117,7 +176,7 @@ class MultiInvestigation:
                       +self.Experiment3.FaultExperiment.name + " " + self.Experiment3.FaultExperiment.date)
         
         ax3.set_rticks(ringsData)
-        fig.savefig(self.Experiment1.FaultExperiment.bFieldPath + "MulInvestigationPolarCompCBu.pdf")
+        fig.savefig(self.Experiment1.FaultExperiment.bFieldPath + "MulInvestigationPolarCompCBuDiffTest.pdf")
 
         fig, ax4 = plt.subplots(1, 1, figsize=set_size(), sharey=True, subplot_kw={'projection': 'polar'})
         ax4.errorbar(theta, self.exp1DataCBw[:,1], xerr=0, yerr=0, capsize=0.5,fmt=",", c= self.c3  )
@@ -127,7 +186,7 @@ class MultiInvestigation:
                       + self.Experiment2.FaultExperiment.name + " " + self.Experiment2.FaultExperiment.date + " and \n" 
                       +self.Experiment3.FaultExperiment.name + " " + self.Experiment3.FaultExperiment.date)
         ax4.set_rticks(ringsData)
-        fig.savefig(self.Experiment1.FaultExperiment.bFieldPath + "MulInvestigationPolarCompCBw.pdf")
+        fig.savefig(self.Experiment1.FaultExperiment.bFieldPath + "MulInvestigationPolarCompCBwDiffTest.pdf")
 
         fig, ax5 = plt.subplots(1, 1, figsize=set_size(), sharey=True, subplot_kw={'projection': 'polar'})
         ax5.errorbar(theta, self.exp1DataARBu[:,1], xerr=0, yerr=0, capsize=0.5,fmt=",", c= self.c3  )
@@ -137,7 +196,7 @@ class MultiInvestigation:
                       + self.Experiment2.FaultExperiment.name + " " + self.Experiment2.FaultExperiment.date + " and \n" 
                       +self.Experiment3.FaultExperiment.name + " " + self.Experiment3.FaultExperiment.date)
         ax5.set_rticks(ringsData)
-        fig.savefig(self.Experiment1.FaultExperiment.bFieldPath + "MulInvestigationPolarCompARBu.pdf")
+        fig.savefig(self.Experiment1.FaultExperiment.bFieldPath + "MulInvestigationPolarCompARBuDiffTest.pdf")
 
         fig, ax6 = plt.subplots(1, 1, figsize=set_size(), sharey=True, subplot_kw={'projection': 'polar'})
         ax6.errorbar(theta, self.exp1DataARBw[:,1], xerr=0, yerr=0, capsize=0.5,fmt=",", c= self.c3  )
@@ -147,7 +206,8 @@ class MultiInvestigation:
                       + self.Experiment2.FaultExperiment.name + " " + self.Experiment2.FaultExperiment.date + " and \n" 
                       +self.Experiment3.FaultExperiment.name + " " + self.Experiment3.FaultExperiment.date)
         ax6.set_rticks(ringsData)
-        fig.savefig(self.Experiment1.FaultExperiment.bFieldPath + "MulInvestigationPolarCompARBw.pdf")
+        fig.savefig(self.Experiment1.FaultExperiment.bFieldPath + "MulInvestigationPolarCompARBwDiffTest.pdf")
+
 
     def passSensorMeasurementsWithoutNoise(self):
         sensorsOfInterest = 30
@@ -205,6 +265,8 @@ class MultiInvestigation:
             self.exp3DataARBw[npos,:] = (sensorPosDef[i], self.Experiment3.diffBField[29 + 120 + i] * 1E6)
 
             npos = npos + 1
+
+
     @deprecated("This Function uses the calculation of the difference between two absolute fields. Use plotCompFieldsOfExperimentsWithoutNoise instead")
     def plotCompFieldsOfExperimentsDirect(self):  
         ''' Plot for each layer array position Bu above Bw and experiment together --> 3 x 2 plots with each two colors
@@ -257,6 +319,7 @@ class MultiInvestigation:
            loc="upper right") 
         fig.savefig(self.Experiment1.FaultExperiment.bFieldPath + "MulInvestigationCompAllDirect.pdf")       
 
+
     def plotCompFieldsOfExperimentsWithoutNoise(self):  
         ''' Plot for each layer array position Bu above Bw and experiment together --> 3 x 2 plots with each two colors
         - interest is to determine outliers with a visual method
@@ -269,57 +332,36 @@ class MultiInvestigation:
 
         fig, axs = plt.subplots(2, 3, figsize=set_size(), sharex=True)
 
-        # fig, ax1 = plt.subplots(1, 1, figsize=set_size(), sharey=True, subplot_kw={'projection': 'polar'})
         axs[0,0].plot(self.exp1DataAVBu[:,0], self.exp1DataAVBu[:,1], c =  self.c3  )
         axs[0,0].plot(self.exp1DataAVBu[:,0], self.exp2DataAVBu[:,1], c = self.c2)
         axs[0,0].plot(self.exp1DataAVBu[:,0], self.exp3DataAVBu[:,1], c = self.c1)
         axs[0,0].set_title("AV: $\Delta B_u$")
         axs[0,0].set_ylim([-15, 15])
-        # axs[0,0].set_rticks(ringsData)
-        # fig.savefig(self.Experiment1.FaultExperiment.bFieldPath + "MulInvestigationPolarCompAVBu.pdf")
 
-        # fig, ax2 = plt.subplots(1, 1, figsize=set_size(), sharey=True, subplot_kw={'projection': 'polar'})
         axs[1,0].plot(self.exp1DataAVBu[:,0], self.exp1DataAVBw[:,1], c =  self.c3  )
         axs[1,0].plot(self.exp1DataAVBu[:,0], self.exp2DataAVBw[:,1], c = self.c2)
         axs[1,0].plot(self.exp1DataAVBu[:,0], self.exp3DataAVBw[:,1], c = self.c1)
         axs[1,0].set_title("AV: $\Delta B_w$")
         axs[1,0].set_ylim([-10, 10])
-        # axs[1,0].set_rticks(ringsData)
-        # fig.savefig(self.Experiment1.FaultExperiment.bFieldPath + "MulInvestigationPolarCompAVBw.pdf")
 
-        # fig, ax3 = plt.subplots(1, 1, figsize=set_size(), sharey=True, subplot_kw={'projection': 'polar'})
         axs[0,1].plot(self.exp1DataAVBu[:,0], self.exp1DataCBu[:,1],c = self.c3  )
         axs[0,1].plot(self.exp1DataAVBu[:,0], self.exp2DataCBu[:,1], c = self.c2)
         axs[0,1].plot(self.exp1DataAVBu[:,0], self.exp3DataCBu[:,1], c = self.c1)
         axs[0,1].set_title("Center: $\Delta B_u$")
         axs[0,1].set_ylim([-15, 15])
         
-        # axs[0,1].set_rticks(ringsData)
-        # fig.savefig(self.Experiment1.FaultExperiment.bFieldPath + "MulInvestigationPolarCompCBu.pdf")
-
-        # fig, axs[1,1] = plt.subplots(1, 1, figsize=set_size(), sharey=True, subplot_kw={'projection': 'polar'})
         axs[1,1].plot(self.exp1DataAVBu[:,0], self.exp1DataCBw[:,1], c =  self.c3  )
         axs[1,1].plot(self.exp1DataAVBu[:,0], self.exp2DataCBw[:,1], c = self.c2)
         axs[1,1].plot(self.exp1DataAVBu[:,0], self.exp3DataCBw[:,1], c = self.c1)
         axs[1,1].set_title("Center: $\Delta B_w$")
         axs[1,1].set_ylim([-10, 10])
-        # axs[1,1].set_rticks(ringsData)
-        # fig.savefig(self.Experiment1.FaultExperiment.bFieldPath + "MulInvestigationPolarCompCBw.pdf")
 
-        # fig, axs[0,2] = plt.subplots(1, 1, figsize=set_size(), sharey=True, subplot_kw={'projection': 'polar'})
         axs[0,2].plot(self.exp1DataAVBu[:,0], self.exp1DataARBu[:,1], c =  self.c3  )
         axs[0,2].plot(self.exp1DataAVBu[:,0], self.exp2DataARBu[:,1], c = self.c2)
         axs[0,2].plot(self.exp1DataAVBu[:,0], self.exp3DataARBu[:,1], c = self.c1)
         axs[0,2].set_title("AR: $\Delta B_u$")
         axs[0,2].set_ylim([-15, 15])
 
-        # measured on sensors "+ "\n" +self.Experiment1.FaultExperiment.name + " " + self.Experiment1.FaultExperiment.date + " ,\n" 
-                    # + self.Experiment2.FaultExperiment.name + " " + self.Experiment2.FaultExperiment.date + " and \n" 
-                    # +self.Experiment3.FaultExperiment.name + " " + self.Experiment3.FaultExperiment.date
-        # axs[0,2].set_rticks(ringsData)
-        # fig.savefig(self.Experiment1.FaultExperiment.bFieldPath + "MulInvestigationPolarCompARBu.pdf")
-
-        # fig, axs[1,2] = plt.subplots(1, 1, figsize=set_size(), sharey=True, subplot_kw={'projection': 'polar'})
         axs[1,2].plot(self.exp1DataAVBu[:,0], self.exp1DataARBw[:,1], c =  self.c3  )
         axs[1,2].plot(self.exp1DataAVBu[:,0], self.exp2DataARBw[:,1], c = self.c2)
         axs[1,2].plot(self.exp1DataAVBu[:,0], self.exp3DataARBw[:,1], c = self.c1)
@@ -332,7 +374,7 @@ class MultiInvestigation:
 
         fig.legend(labels=labels, 
            loc="upper right") 
-        fig.savefig(self.Experiment1.FaultExperiment.bFieldPath + "MulInvestigationCompAllWithoutNoise.pdf")
+        fig.savefig(self.Experiment1.FaultExperiment.bFieldPath + "MulInvestigationCompAllWithoutNoiseDiffTest.pdf")
 
 
     def __init__(self, Experiment1: Investigation, Experiment2: Investigation, Experiment3: Investigation):
@@ -342,27 +384,28 @@ class MultiInvestigation:
         self.Experiment1 = Experiment1
         self.Experiment2 = Experiment2
         self.Experiment3 = Experiment3
-        self.passSensorMeasurementsWithoutNoise()
+        # self.passSensorMeasurementsWithoutNoise()
+        self.passSensorMeasurementsMeanNoiseDirect()
         self.plotPolarCompFieldsOfExperiments()
         self.plotCompFieldsOfExperimentsWithoutNoise()
         
 
 # for testing:
-experiment1DataClass = Ref50Experiment20170207
+experiment1DataClass = Ref100Experiment20170207
 experiment1Def = Exp(experiment1DataClass.measurementYear, experiment1DataClass.measurementName, experiment1DataClass.measurementDate, experiment1DataClass.measuredCurrent, experiment1DataClass.scaleCurrentTo,
                                           experiment1DataClass.noiseBFieldPath, experiment1DataClass.fileNameNoiseAV, experiment1DataClass.fileNameNoiseCenter, experiment1DataClass.fileNameNoiseAR, 
                                           experiment1DataClass.bFieldPath, experiment1DataClass.fileNameAV, experiment1DataClass.fileNameC, experiment1DataClass.fileNameAR)
-experiment2DataClass = Hum30Experiment20170208
+experiment2DataClass = Stoichio13Experiment20170209
 experiment2Def = Exp(experiment2DataClass.measurementYear, experiment2DataClass.measurementName, experiment2DataClass.measurementDate, experiment2DataClass.measuredCurrent, experiment2DataClass.scaleCurrentTo,
                                           experiment2DataClass.noiseBFieldPath, experiment2DataClass.fileNameNoiseAV, experiment2DataClass.fileNameNoiseCenter, experiment2DataClass.fileNameNoiseAR, 
                                           experiment2DataClass.bFieldPath, experiment2DataClass.fileNameAV, experiment2DataClass.fileNameC, experiment2DataClass.fileNameAR)
 
-experiment3DataClass = Hum50Experiment20170208
+experiment3DataClass = Stoichio15Experiment20170209
 experiment3Def = Exp(experiment3DataClass.measurementYear, experiment3DataClass.measurementName, experiment3DataClass.measurementDate, experiment3DataClass.measuredCurrent, experiment3DataClass.scaleCurrentTo,
                                           experiment3DataClass.noiseBFieldPath, experiment3DataClass.fileNameNoiseAV, experiment3DataClass.fileNameNoiseCenter, experiment3DataClass.fileNameNoiseAR, 
                                           experiment3DataClass.bFieldPath, experiment3DataClass.fileNameAV, experiment3DataClass.fileNameC, experiment3DataClass.fileNameAR)
 
-experiment4DataClass = Hum80Experiment20170208
+experiment4DataClass = Stoichio20Experiment20170209
 experiment4Def = Exp(experiment4DataClass.measurementYear, experiment4DataClass.measurementName, experiment4DataClass.measurementDate, experiment4DataClass.measuredCurrent, experiment4DataClass.scaleCurrentTo,
                                           experiment4DataClass.noiseBFieldPath, experiment4DataClass.fileNameNoiseAV, experiment4DataClass.fileNameNoiseCenter, experiment4DataClass.fileNameNoiseAR, 
                                           experiment4DataClass.bFieldPath, experiment4DataClass.fileNameAV, experiment4DataClass.fileNameC, experiment4DataClass.fileNameAR)
