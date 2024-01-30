@@ -14,7 +14,7 @@ class Investigation:
     '''Class to handle two experiments and get the differential B-Field'''
     def readSensorMatrix(self):
         # read Sensor file
-        self.sensorPath = r'C:\Users\freiseml\Nextcloud2\00-These Leo\00-Travail\03-PAC\00-Dataplots\\'
+        self.sensorPath = r'C:\Users\freiseml\Nextcloud2\00-These-Leo\00-Travail\03-PAC\00-Dataplots\\'
         self.sensorFilename = "PYTHON_GENEPAC_Sensors_3_Plan_AV_C_AR.txt"
         sensorMatrix = pd.read_csv(self.sensorPath + self.sensorFilename, sep="	", header = None)
         # print(sensorMatrix)
