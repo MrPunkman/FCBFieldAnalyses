@@ -284,7 +284,7 @@ class Experiment:
         return BFieldArray
 
     def createDF(self, bFieldPath, filename):
-        # """This function is to read a .lvm file and read the data without the header"""
+        """This function is to read a .lvm file and read the data without the header"""
         ## import file and set file path
         # print("reading Data start")
         df = pd.read_csv(
@@ -320,14 +320,15 @@ class Experiment:
         ax1.errorbar(theta, yErr2020, xerr=0, yerr=0, capsize=0.5,fmt=",", c="seagreen")
         ax1.set_title(titleInformationData + " Standard Deviation on sensor measurements "+ "\n" +self.name + " " + self.date)
         ax1.set_rticks(ringsStd)
-        fig.savefig(self.bFieldPath + self.name + "_Std_Polar.pdf")
+        fig.savefig(self.bFieldPath + self.name + "_EXP_Std_Polar.pdf")
+        # print(self.bFieldPath + self.name + "_EXP_Std_Polar.pdf")
 
         ## plot Values on sensors
         fig, ax2 = plt.subplots(1, 1, figsize=set_size(), sharey=True, subplot_kw={'projection': 'polar'})
         ax2.errorbar(theta, r2020, xerr=0, yerr=0, capsize=0.5,fmt=",", c="seagreen")
         ax2.set_title(titleInformationData + " Measurement around the Fuel Cell"+ "\n" +self.name + " " + self.date)
         ax2.set_rticks(ringsData)
-        fig.savefig(self.bFieldPath + self.name + "_Measurement_Polar.pdf")
+        fig.savefig(self.bFieldPath + self.name + "_EXP_Measurement_Polar.pdf")
 
     def plotFieldMeasurementDataAndSavePlots(self):
 # plot B-Field respecting factors depending on the investigated year and save clean field mean values as txt
