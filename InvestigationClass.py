@@ -236,7 +236,12 @@ class Investigation:
         plt.ylabel("Magnetic Induction ($\mu$T)")
         plt.savefig(self.savepath + self.FaultExperiment.name + "_B_diffFieldWithNOISE.pdf")
 
-
+    def addMCtoDiffField(self):
+        """Adds $B_MC$ to the diff field. Has to be executed for nonlinear method"""
+        self.BmC = pd.read_csv("HellenMC.txt", header = None)
+        self.BmC = self.BmC.astype(float)
+        self.BmC = np.asarray(self.BmC)
+        self.fullSensorArray = np.add(self.fullSensorArray, self.BmC)
 
     def __init__(self, currentDirectionIsTheSame:bool, RefExperiment: Exp, FaultExperiment: Exp, sensorList: list):
         self.RefExperiment = RefExperiment
@@ -253,14 +258,17 @@ class Investigation:
         self.sensorsOfInterestArray = np.zeros((len(sensorList),7))
         self.sensoMatrix = self.readSensorMatrix()
         self.savepath = FaultExperiment.bFieldPath
+        
         self.currentDirectionIsTheSame = currentDirectionIsTheSame
         if self.currentDirectionIsTheSame == True: self.CurrentInversionFactor = 1
         else: self.currentDirectionIsTheSame = -1
+
         self.diffBField = np.subtract(FaultExperiment.scaledField,RefExperiment.scaledField)
         self.sensorsOfInterestArray = self.creatSensorMapping()
         self.plotHealthyAndFaultyField()
         # plot of diff Field with noise subtraction during experiment data treatment
         self.plotDiffField()
+        
         self.plotInvestiagtedField()
         # plot of diff Field without noise subtraction
 
