@@ -10,8 +10,8 @@ import random
 class invLyesData():
     def readSensorMatrix(self):
         # read Sensor file
-        self.sensorPath = r'Z:\06-Sensors\01-SensorPositions\2017-Lyes\\'
-        self.sensorFilename = "PYTHON_GENEPAC_Sensors_3_Plan_Bu_Bw_AV_C_AR-Lyes.txt"
+        self.sensorPath = r'Z:\06-Sensors\01-SensorPositions\2020-Hellen\\'
+        self.sensorFilename = "PYTHON_GENEPAC_Sensors_3_Plan_AV_C_AR.txt"
         sensorMatrix = pd.read_csv(self.sensorPath + self.sensorFilename, sep="	", header = None)
         # print(sensorMatrix)
         self.sensorMatrix = np.asarray(sensorMatrix)
@@ -59,10 +59,10 @@ class invLyesData():
 
         f4 = plt.subplots(1, 1, figsize=set_size(), sharey=True)
         # plt.tight_layout()
-        plt.plot(plotData, label = " Investigated differential field in $\mu$T", color = specific_colors['G2EGreen'])
+        plt.plot(plotData, label = " Investigated differential field in $\mu$T", color = specific_colors['MPM_red'], marker = "|")
         plt.xlim(0,len(self.sensorsOfInterest)-1)
-        plt.xticks([0 , 10 , 20, 30, 40 , 50 , 60 , 70 , 80 , 90, 100, 110, 120, 130, 140, 150, 160, 170, 180])
-        plt.ylim(-20,20)
+        plt.xticks([0 , 10 , 20, 30])
+        plt.ylim(-10,10)
         #plt.title('Differential B-Field caused by {faulty} for {amps} A the {date}'.format(date = self.FaultExperiment.date, faulty = self.FaultExperiment.name, amps = self.FaultExperiment.scaleCurrentTo))
         plt.legend()
         plt.xlabel("Sensor number")
@@ -123,7 +123,7 @@ class invLyesData():
         # plt.plot(self.fullSensorArray)
         # plt.show()
 
-        self.addNoiseOnSimulatedData() # add this line to add some noise!!! +- 500 nT
+        # self.addNoiseOnSimulatedData() # add this line to add some noise!!! +- 500 nT
         
         self.readSensorMatrix()
         self.createSensorMapping()
@@ -132,11 +132,11 @@ class invLyesData():
         
 
 ############### Test
-nameTest = "Noise"
-sensorsOfInterest = np.linspace(0, 179 , 180, dtype=int)
+nameTest = "test"
+sensorsOfInterest = np.linspace(60, 119 , 60, dtype=int)
 
-path = r'Z:\01-TestCases\01-Stability\02-3D-Fault\01-Noise\\'
-fileName = "test-3D-1000Elements-MagFieldOnSensors.txt"
+path = r'Z:\01-TestCases\01-Stability\00-noise\180-Sensors\\'
+fileName = "test-MagFieldOnSensors-noNoise.txt"
 testClass = invLyesData(nameTest ,path, fileName, sensorsOfInterest)
 print(testClass.fullSensorArray)
 testClass.plotInvestigatedField()

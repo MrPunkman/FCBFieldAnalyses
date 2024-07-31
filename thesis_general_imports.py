@@ -24,12 +24,12 @@ deep_colors = sns.color_palette('deep')
 pastel_colors = sns.color_palette('pastel')
 
 # Font sizes
-plt.rc('axes', titlesize=8)     # fontsize of the axes title
-plt.rc('axes', labelsize=8)    # fontsize of the x and y labels
-plt.rc('xtick', labelsize=8)    # fontsize of the tick labels
-plt.rc('ytick', labelsize=8)    # fontsize of the tick labels
-plt.rc('legend', fontsize=8)    # legend fontsize
-plt.rc('font', size=8)          # controls default text sizes
+plt.rc('axes', titlesize=10)     # fontsize of the axes title
+plt.rc('axes', labelsize=10)    # fontsize of the x and y labels
+plt.rc('xtick', labelsize=10)    # fontsize of the tick labels
+plt.rc('ytick', labelsize=10)    # fontsize of the tick labels
+plt.rc('legend', fontsize=10)    # legend fontsize
+plt.rc('font', size=10)          # controls default text sizes
 
 sns.set_style('whitegrid') # better-looking background grids
 
@@ -43,7 +43,7 @@ mpl.rcParams['axes.prop_cycle'] = mpl.cycler(color=thesis_color_palette)
 latex_width = 455.8843 # width of latex document in pts
 
 # Function to set figure size to avoid scaling in LaTeX
-def set_size(width=455.8843, fraction=1, subplots=(1, 1)):
+def set_size(width=latex_width, fraction=1, subplots=(1, 1)):
     """Set figure dimensions to avoid scaling in LaTeX.
        source: https://jwalton.info/Embed-Publication-Matplotlib-Latex/
 
@@ -61,9 +61,11 @@ def set_size(width=455.8843, fraction=1, subplots=(1, 1)):
             Dimensions of figure in inches
     """
     if width == 'thesis':
-        width_pt = 455.8843
+        width_pt = 516.0
     elif width == 'beamer':
         width_pt = 307.28987
+    if width == 'doubleColumn':
+        width_pt = 252.0
     else:
         width_pt = width
 

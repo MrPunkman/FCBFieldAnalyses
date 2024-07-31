@@ -166,7 +166,43 @@ class invHelenData():
         plt.xlabel("Sensor number")
         plt.ylabel("Magnetic Induction ($\mu$T)")
         plt.savefig(self.path + self.name + "_Investig_B_diffField.pdf")
+    
+    # test fucntion plot
+    def plotInvestigatedField(self):
+        # visualize the faulty B-Field
+        # print("Visualization of Investigated diff Field")
+        plotData = np.multiply(self.finalSensorsOfInterest [:, -1], 1E3)
 
+        ## add here an option to plot the sensor number with 5 ticks on the x axes. Marker would be nice too
+
+        # # get xticks for plots depending on sensors, used
+        # ## set arrays for plot
+        # xlabelPointToSet = self.sensorsOfInterest
+        # xrange = np.linspace(0, 29, 30, dtype=int)
+        # xrangeToSet = np.linspace(0, 4, 5, dtype=int)
+        # xlabelsToSet = np.linspace(0, 4, 5, dtype=int)
+        # ## define points for plotting
+        # xrange = xrange%5
+        # # define tick positions by full divison by 5
+        # xlabelPointToSet = xlabelPointToSet%5
+
+        # for i in range(0,5):
+        #     xrangeToSet[i] = 
+        #     xlabelsToSet[i] = self.sensorsOfInterest[xlabelPointToSet[i]]
+
+
+
+        f4 = plt.subplots(1, 1, figsize=set_size(), sharey=True)
+        # plt.tight_layout()
+        plt.plot(plotData, label = "  field in $\mu$T", color = specific_colors['MPM_red'], marker = "|")
+        plt.xlim(0,len(self.sensorsOfInterest)-1)
+        plt.xticks([0 , 10 , 20, 30])
+        # plt.ylim(-30,30)
+        #plt.title('Differential B-Field caused by {faulty} for {amps} A the {date}'.format(date = self.FaultExperiment.date, faulty = self.FaultExperiment.name, amps = self.FaultExperiment.scaleCurrentTo))
+        plt.legend()
+        plt.xlabel("t")
+        plt.ylabel("Magnetic Induction ($\mu$T)")
+        plt.savefig(self.path + self.name + "_Investig_B_diffField.pdf")
 
     def createDF(self):
         """This function is to read a .lvm file and read the data without the header"""
@@ -208,10 +244,10 @@ class invHelenData():
 ############### Test
 nameTest = "TestToto"
 sensorsOfInterest = np.linspace(0, 59, 60, dtype=int)
-sensorsOfInterest = np.delete(sensorsOfInterest, 34)
-sensorsOfInterest = np.delete(sensorsOfInterest, 29)
-sensorsOfInterest = np.delete(sensorsOfInterest, 29)
-sensorsOfInterest = np.delete(sensorsOfInterest, 4)
+# sensorsOfInterest = np.delete(sensorsOfInterest, 34)
+# sensorsOfInterest = np.delete(sensorsOfInterest, 29)
+# sensorsOfInterest = np.delete(sensorsOfInterest, 29)
+# sensorsOfInterest = np.delete(sensorsOfInterest, 4)
 path = r'Z:\06-Data\02-Hellen\Mesure_2021\2021_08_18\Sto1-5\\'
 fileName = "AST Sto 1.5 D 21 100 A _B_Field_CleanMeasured.dat"
 testClass = invHelenData(nameTest ,path, fileName, sensorsOfInterest)
