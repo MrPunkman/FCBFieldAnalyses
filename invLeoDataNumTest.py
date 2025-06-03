@@ -10,8 +10,8 @@ import random
 class invLyesData():
     def readSensorMatrix(self):
         # read Sensor file
-        self.sensorPath = r'Z:\06-Sensors\01-SensorPositions\2017-Lyes\\'
-        self.sensorFilename = "PYTHON_GENEPAC_Sensors_3_Plan_Bu_Bw_AV_C_AR-Lyes.txt"
+        self.sensorPath = r'Z:\06-Sensors\01-SensorPositions\2024-Leonard\\'
+        self.sensorFilename = "2024-11-07-PerpSensor2PlaneByWave0Mes.txt"
         sensorMatrix = pd.read_csv(self.sensorPath + self.sensorFilename, sep="	", header = None)
         # print(sensorMatrix)
         self.sensorMatrix = np.asarray(sensorMatrix)
@@ -117,15 +117,15 @@ class invLyesData():
 
 ############### Test
 nameTest = "MagFieldOnSensors"
-radial = np.linspace(0, 119 , 120, dtype=int)
-axial = np.linspace(150, 179 , 30, dtype=int)
+# radial = np.linspace(0, 55 , 56, dtype=int)
+# axial = np.linspace(150, 179 , 30, dtype=int)
 
-sensorsOfInterest = np.append(radial,axial)
+# sensorsOfInterest = np.append(radial,axial)
 
-sensorsOfInterest = np.linspace(0, 179 , 180, dtype=int)
+sensorsOfInterest = np.linspace(0, 55 , 56, dtype=int)
 
-path = r'Z:\06-Data\01-Lyes\TransferNow-Essai_Stochio\_Stochio1_7_Defaut3D_Cell61_65_I100A\Mesure_du_champ\\'
-fileName = "champ_Stochio1_7_Defaut3D_Cell61_65_I100A_MD.dat"
+path = r'Z:\01-TestCases\08-SimulationNewStack\01-newSensors-Leo\3D-Fault\easy\04-plane\\'
+fileName = "MagFieldOnSensors.txt"
 testClass = invLyesData(nameTest ,path, fileName, sensorsOfInterest)
 print(testClass.fullSensorArray)
 testClass.plotInvestigatedField()

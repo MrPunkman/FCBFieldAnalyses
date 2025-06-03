@@ -1,0 +1,5 @@
+# Created by Florentin Salomez, 27/07/2020
+# Style sheet no TeX, to speed up plotting
+
+font.family : 'sans-serif'
+text.usetex : False

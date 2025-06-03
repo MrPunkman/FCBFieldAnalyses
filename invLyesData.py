@@ -242,13 +242,13 @@ class invHelenData():
         
 
 ############### Test
-nameTest = "TestToto"
-sensorsOfInterest = np.linspace(0, 59, 60, dtype=int)
+nameTest = "Us"
+sensorsOfInterest = np.linspace(30, 59, 30, dtype=int)
 # sensorsOfInterest = np.delete(sensorsOfInterest, 34)
 # sensorsOfInterest = np.delete(sensorsOfInterest, 29)
 # sensorsOfInterest = np.delete(sensorsOfInterest, 29)
 # sensorsOfInterest = np.delete(sensorsOfInterest, 4)
-path = r'Z:\06-Data\02-Hellen\Mesure_2021\2021_08_18\Sto1-5\\'
+path = r'Z:\01-TestCases\09-Us-Test\2D\\'
 fileName = "AST Sto 1.5 D 21 100 A _B_Field_CleanMeasured.dat"
 testClass = invHelenData(nameTest ,path, fileName, sensorsOfInterest)
 print(testClass.fullSensorArray)

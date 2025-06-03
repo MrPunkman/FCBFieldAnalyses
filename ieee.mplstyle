@@ -1,0 +1,40 @@
+# Created by Florentin Salomez, 27/07/2020
+# Style sheet for IEEE Transactions 
+
+font.family : serif
+font.size    : 9.0
+text.usetex : True
+
+axes.prop_cycle : cycler('linestyle', ['-', '--', '-.', ':', '-', '--', '-.', ':', '-', '--']) + cycler('color', ['1f77b4', 'ff7f0e', '2ca02c', 'd62728', '9467bd', '8c564b', 'e377c2', '7f7f7f', 'bcbd22', '17becf']) + cycler('marker', [' ', ' ', ' ', ' ', 'o', 's', '^', 'v', '1', '+'])
+
+figure.figsize   : 3.46, 2.4
+
+axes.grid: False
+axes.linewidth: 0.5
+
+lines.linewidth: 1
+lines.markerfacecolor: None
+lines.markersize: 4
+
+xtick.top:      True   # draw ticks on the top side
+xtick.bottom:	True
+xtick.direction: in
+
+ytick.left:     True    # draw ticks on the left side
+ytick.right:    True
+ytick.direction: in
+
+legend.frameon: False
+
+figure.autolayout : False # /!\ set False if figure.constrained_layout.use True
+
+figure.constrained_layout.use: True
+
+figure.constrained_layout.h_pad:  0.01389  # Padding around axes objects. Float representing
+figure.constrained_layout.w_pad:  0.01389  # = 1/72 inches => 1pt
+figure.constrained_layout.hspace: 0.075     # Space between subplot groups. Float representing
+figure.constrained_layout.wspace: 0.075     # a fraction of the subplot widths being separated.
+
+text.latex.preamble: \usepackage{amssymb} \usepackage{siunitx} \usepackage[scr=boondox,cal=esstix]{mathalpha}
+
+figure.dpi: 300

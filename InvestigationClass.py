@@ -12,6 +12,35 @@ from thesis_general_imports import*
 
 class Investigation:
     '''Class to handle two experiments and get the differential B-Field'''
+    def __init__(self, currentDirectionIsTheSame:bool, RefExperiment: Exp, FaultExperiment: Exp, sensorList: list):
+        self.RefExperiment = RefExperiment
+        self.FaultExperiment = FaultExperiment
+        ## Calculation of the differential field via the direct subtraction of Bmes2 - Bmes1. Here, we use mean fields with noise on each measurement and extract the noise by subtracting each measured mean value from measurement 2 - measurement 1.
+        ## so we get the signature of the error.
+        self.diffFieldONAV = self.FaultExperiment.BFieldMeanvalueWithNoiseAV - self.RefExperiment.BFieldMeanvalueWithNoiseAV
+        self.diffFieldONC = self.FaultExperiment.BFieldMeanvalueWithNoiseC - self.RefExperiment.BFieldMeanvalueWithNoiseC
+        self.diffFieldONAR = self.FaultExperiment.BFieldMeanvalueWithNoiseAR - self.RefExperiment.BFieldMeanvalueWithNoiseAR
+        ## put all the 3 together
+        self.directDifferentialField = np.append(self.diffFieldONAV, np.append(self.diffFieldONC, self.diffFieldONAR))
+
+        self.sensorArray = sensorList
+        self.sensorsOfInterestArray = np.zeros((len(sensorList),7))
+        self.sensoMatrix = self.readSensorMatrix()
+        self.savepath = FaultExperiment.bFieldPath
+        
+        self.currentDirectionIsTheSame = currentDirectionIsTheSame
+        if self.currentDirectionIsTheSame == True: self.CurrentInversionFactor = 1
+        else: self.currentDirectionIsTheSame = -1
+
+        self.diffBField = np.subtract(FaultExperiment.scaledField,RefExperiment.scaledField)
+        self.sensorsOfInterestArray = self.creatSensorMapping()
+        self.plotHealthyAndFaultyField()
+        # plot of diff Field with noise subtraction during experiment data treatment
+        self.plotDiffField()
+        
+        self.plotInvestiagtedField()
+        # plot of diff Field without noise subtraction
+        
     def readSensorMatrix(self):
         # read Sensor file
         self.sensorPath = r'C:\Users\freiseml\Nextcloud2\00-These-Leo\00-Travail\03-PAC\00-Dataplots\\'
@@ -243,34 +272,7 @@ class Investigation:
         self.BmC = np.asarray(self.BmC)
         self.fullSensorArray = np.add(self.fullSensorArray, self.BmC)
 
-    def __init__(self, currentDirectionIsTheSame:bool, RefExperiment: Exp, FaultExperiment: Exp, sensorList: list):
-        self.RefExperiment = RefExperiment
-        self.FaultExperiment = FaultExperiment
-        ## Calculation of the differential field via the direct subtraction of Bmes2 - Bmes1. Here, we use mean fields with noise on each measurement and extract the noise by subtracting each measured mean value from measurement 2 - measurement 1.
-        ## so we get the signature of the error.
-        self.diffFieldONAV = self.FaultExperiment.BFieldMeanvalueWithNoiseAV - self.RefExperiment.BFieldMeanvalueWithNoiseAV
-        self.diffFieldONC = self.FaultExperiment.BFieldMeanvalueWithNoiseC - self.RefExperiment.BFieldMeanvalueWithNoiseC
-        self.diffFieldONAR = self.FaultExperiment.BFieldMeanvalueWithNoiseAR - self.RefExperiment.BFieldMeanvalueWithNoiseAR
-        ## put all the 3 together
-        self.directDifferentialField = np.append(self.diffFieldONAV, np.append(self.diffFieldONC, self.diffFieldONAR))
-
-        self.sensorArray = sensorList
-        self.sensorsOfInterestArray = np.zeros((len(sensorList),7))
-        self.sensoMatrix = self.readSensorMatrix()
-        self.savepath = FaultExperiment.bFieldPath
-        
-        self.currentDirectionIsTheSame = currentDirectionIsTheSame
-        if self.currentDirectionIsTheSame == True: self.CurrentInversionFactor = 1
-        else: self.currentDirectionIsTheSame = -1
-
-        self.diffBField = np.subtract(FaultExperiment.scaledField,RefExperiment.scaledField)
-        self.sensorsOfInterestArray = self.creatSensorMapping()
-        self.plotHealthyAndFaultyField()
-        # plot of diff Field with noise subtraction during experiment data treatment
-        self.plotDiffField()
-        
-        self.plotInvestiagtedField()
-        # plot of diff Field without noise subtraction
+    
 
 
 

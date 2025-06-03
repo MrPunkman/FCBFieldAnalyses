@@ -5,7 +5,6 @@ import matplotlib.pyplot as plt
 from statistics import mean
 from collectAllMeasureDataInOneFile import *
 from thesis_general_imports import *
-from deprecated import deprecated
 
 # import seaborn as sns
 
@@ -18,10 +17,10 @@ class Experiment:
     def __init__(
         self,
         year,
-        name,
+        name, 
         date,
         measuredCurrent,
-        scaleCurrentTo,
+        scaleCurrentTo, 
         noiseBFieldPath,
         filenamenoiseAV,
         filenamenoiseCenter,
@@ -255,7 +254,7 @@ class Experiment:
         return result
 
     ## Calculate field with: $B_mean - B_noise_mean$
-    @deprecated("This Function uses the calculation of the $B_mean - B_noise_mean$ to try to reproduce results from Lyes Ifrek. Do not USE!")
+    # @deprecated("This Function uses the calculation of the $B_mean - B_noise_mean$ to try to reproduce results from Lyes Ifrek. Do not USE!")
     def BFieldMeanCalcTest(self):
         self.BFieldDirtyAV = np.subtract(self.BFieldMeanvalueWithNoiseAV, self.noiseBFieldMeanvalueAV)
         self.BFieldDirtyC = np.subtract(self.BFieldMeanvalueWithNoiseC, self.noiseBFieldMeanvalueC)
