@@ -24,12 +24,12 @@ deep_colors = sns.color_palette('deep')
 pastel_colors = sns.color_palette('pastel')
 
 # Font sizes
-plt.rc('axes', titlesize=10)     # fontsize of the axes title
-plt.rc('axes', labelsize=10)    # fontsize of the x and y labels
-plt.rc('xtick', labelsize=10)    # fontsize of the tick labels
-plt.rc('ytick', labelsize=10)    # fontsize of the tick labels
-plt.rc('legend', fontsize=10)    # legend fontsize
-plt.rc('font', size=10)          # controls default text sizes
+plt.rc('axes', titlesize=9)     # fontsize of the axes title
+plt.rc('axes', labelsize=9)    # fontsize of the x and y labels
+plt.rc('xtick', labelsize=9)    # fontsize of the tick labels
+plt.rc('ytick', labelsize=9)    # fontsize of the tick labels
+plt.rc('legend', fontsize=9)    # legend fontsize
+plt.rc('font', size=9)          # controls default text sizes
 
 sns.set_style('whitegrid') # better-looking background grids
 

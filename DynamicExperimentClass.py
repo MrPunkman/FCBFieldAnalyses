@@ -8,93 +8,170 @@ from thesis_general_imports import *
 import csv
 # from deprecated import deprecated
 from MeasurementSet import*
+plt.style.use('./ieee.mplstyle')
 
 # import seaborn as sns
 
 
 class DynamicExperiment:
+    """ Name the Experiment with name, pass a path, a filename and a file format for the experiment data. 
+    Pass the same information for the noise data"""
     # for 2020: 64.86 (50 A); 60 to 100 A
     # scaleVCurrentToAmps = 64.86
     # scaleCurrentTo = 50
 # noiseBFieldPath : str, filenamenoiseC : str,
 
-    def __init__(self, name : str,  bFieldPath : str, filenameC : str, fileFormat : str):
-        self.name = name
+    def __init__(self, dataName : str,  bFieldPath : str, dataFileName : str, fileFormat : str,
+                 noiseName: str, noisebFieldPath : str, noiseDataFileName : str, noiseFileFormat : str):
+        self.name = dataName
+        self.bFieldPath = bFieldPath
+        self.dataFileName = dataFileName
         self.fileFormat = fileFormat
+        self.noisebFieldPath = noisebFieldPath
+        self.noiseDataFileName = noiseDataFileName
+        self.noiseFileFormat = noiseFileFormat
+        self.noiseName = noiseName
+        self.sensorsOfInterest: list
+        self.noiseMean: dict
+        self.noise_Mean_physic: dict
+        self.physic_without_Noise_mean_value_dict : dict
+        self.physic_mean_value_dict_scaled_to_current: dict
+        self.scaleToCurrent: float
+        self.currentScaleFactor: float
+        
         ## Create Measurement Set object for measurement
-        
-        self.measurement = MeasurementSet(bFieldPath, filenameC, "lvm", "Test")
-        
-        # self.dataOnly, self.metaInfo = self.measurement.read_lvm_data(bFieldPath + filenameC)
+        self.dataMeasurement = MeasurementSet(self.bFieldPath, self.dataFileName, fileFormat, dataName)
+
+        ## Create Seconde Measurement Set object for noise
+        self.noiseMeasurement = MeasurementSet(self.noisebFieldPath, self.noiseDataFileName, self.noiseFileFormat, self.noiseName)
         
         # get date
-        self.date = self.measurement.metaInfo["Date"]
-        self.time = self.measurement.metaInfo["Time"]
-        ## Create Measurement Set object for noise
-                
-        
-        ## Define path and files for noise Data
-        # self.noiseBFieldPath = noiseBFieldPath
-
-        # self.filenamenoiseCenter = measurementSetNoiseC
-     
+        self.dataDate = self.dataMeasurement.metaInfo["Date"]
+        self.dataTime = self.dataMeasurement.metaInfo["Time"]
+        self.noiseDate = self.noiseMeasurement.metaInfo["Date"]
+        self.noiseTime = self.noiseMeasurement.metaInfo["Time"]
 
     # ____________________________________________________________Start new Functions_____________________________________________________________________________________________
     
+    def scale_Current_with_currentScaleFactor(self):
+        if not hasattr(self, 'physic_without_Noise_mean_value_dict'): self.compute_Physic_Mean_minus_Noise_mean_Values()
+        self.physic_mean_value_dict_scaled_to_current = {}
+        for sensor in self.physic_without_Noise_mean_value_dict:
+            scaledValue = self.physic_without_Noise_mean_value_dict[sensor] * self.currentScaleFactor
+            self.physic_mean_value_dict_scaled_to_current.update({sensor: scaledValue})
+    
+    def compute_Noise_Mean_dict(self) -> dict:
+        self.noiseMean = self.noiseMeasurement.get_all_Mean_Values()
+        return self.noiseMeasurement.get_all_Mean_Values()
+    
+    def compute_Noise_Mean_Physic_dict(self) -> dict:
+        self.noise_Mean_physic = self.noiseMeasurement.get_all_Physic_Mean_with_Noise_Values()
+        return self.noiseMeasurement.get_all_Physic_Mean_with_Noise_Values()
+    
+    def compute_Data_Mean_dict(self) -> dict:
+        return self.dataMeasurement.get_all_Mean_Values()
+    
+    def compute_Noise_std_dict(self) -> dict:
+        return self.noiseMeasurement.get_all_std_Values()
+    
+    def compute_Data_std_dict(self) -> dict:
+        return self.dataMeasurement.get_all_std_Values()
+    
+    def compute_Physic_Mean_minus_Noise_mean_Values(self) -> dict:
+        sensor: DataSeries
+        self.physic_without_Noise_mean_value_dict = {}
+        for sensor in self.dataMeasurement.data_series_list:
+            print(sensor.name) 
+            if sensor.name in self.sensorsOfInterest:
+                print(sensor.name + " in list")
+                meanData = self.dataMeasurement.get_series_by_name(sensor.name).calculate_physic_mean()
+                print(meanData)
+                meanNoise = self.noiseMeasurement.get_series_by_name(sensor.name).calculate_physic_mean()
+                print(meanNoise)
+                value = meanData - meanNoise
+                print(value)
+                self.dataMeasurement.get_series_by_name(sensor.name).physic_mean_Minus_meanNoise = value 
+                self.physic_without_Noise_mean_value_dict.update({sensor.name: self.dataMeasurement.get_series_by_name(sensor.name).physic_mean_Minus_meanNoise})
+            # else: print(sensor.name + " NOT in list")
+        return self.physic_without_Noise_mean_value_dict
+    
     
 
+    def plot_scaled_and_initial_Field(self):
+        """Plots the initial Field and the scaled field. Can be used to visualize the impact of the scaling"""
+        fig, ax = plt.subplots(figsize=set_size())
+        ax.plot(self.physic_without_Noise_mean_value_dict.keys(), self.physic_without_Noise_mean_value_dict.values(), marker = ".", label = "Measured Field")
+        ax.plot(self.physic_mean_value_dict_scaled_to_current.keys(),self.physic_mean_value_dict_scaled_to_current.values(), marker = ".", label = "Scaled Field")
+        plt.legend()
+        plt.xticks(rotation = 90)
 
-    ## for noise treatment: subtract vector with 60 entries
-    def clearNoiseFromBFieldMeasurements(self, df, subtractor):
-        # print("Clean Noise from measurements start")
-        c = 0
-        result = pd.DataFrame(columns=self.sensorNames[2:62])
-        for i in range(2, 62):
-            result.iloc[:, c] = df.iloc[:, i].sub(subtractor[c])
-            c = c + 1
-        # print("Clean Noise from measurements end")
-        return result
+        # get y-axis limits of the plot
+        low, high = plt.ylim()
+        # find the new limits
+        bound = max(abs(low), abs(high))
+        # set new limits
+        plt.ylim(-bound, bound)
 
-    ## Calculate field with: $B_mean - B_noise_mean$
-    # @deprecated("This Function uses the calculation of the $B_mean - B_noise_mean$ to try to reproduce results from Lyes Ifrek. DO NOT USE!")
-    def BFieldMeanCalcTest(self):
-        self.BFieldDirtyC = np.subtract(self.BFieldMeanvalueWithNoiseC, self.noiseBFieldMeanvalueC)
+    def plot_polar_Mean_for_CleanedValues_fixed_sensors(self, sensor_names: list):
+        """
+        Plots std value for each sensor, respecting its position on the circle around the stack
+        """
         
-    ## calculate B-Field mean values of a Noise frame
-    def BFieldMeanValueNoise(self, df):  
-        # print("Calculate Mean values start")
-        BFieldArray = np.zeros(60)
-        i = 0
-        for sensors in range(2, 62):
-            BFieldArray[i] = df.iloc[:, sensors].mean(axis=0)
-            i = i + 1
-        # print("Calculate Mean values end")
-        return BFieldArray
+        num_sensors = len(sensor_names)
+        
+        # Compute angle positions
+        angles_deg = []
+        angles_rad = []
+        sensor: DataSeries
+        value = []
+        for name in sensor_names:
+            sensor = self.dataMeasurement.get_series_by_name(name)
+            if sensor:
+                value.append(sensor.physic_mean_Minus_meanNoise)
+                angles_rad.append(np.deg2rad(sensor.sensor_Angle_theta))
+            else:
+                angles_rad.append(0)
+                value.append(0)
 
-    ## calculate B-Field mean values of a noise-free DF
-    def BFieldMeanValueClean(self, df):
-        # print("Calculate Mean values noise free start")
-        BFieldArray = np.zeros(60)
-        i = 1
-        for sensors in range(0, len(BFieldArray)):
-            BFieldArray[sensors] = df.iloc[:, sensors].mean(axis=0)
-            i = i + 1
-        # print("Calculate Mean values noise free end")
-        return BFieldArray
+        # Kreis schließen
+        angles_rad = np.append(angles_rad, angles_rad[0])
+        value = np.append(value, value[0])
 
-    def createDF(self, bFieldPath, filename):
-        """This function is to read a .lvm file and read the data without the header"""
-        ## import file and set file path
-        # print("reading Data start")
-        df = pd.read_csv(
-            bFieldPath + filename, sep="	", skiprows=[i for i in range(0, self.skipRows)]
-        )
-        ## change , to . for later calculations. Otherwise, the cell is declared as string and no calculation can be done
-        df = df.replace(",", ".", regex=True)
-        # change type to float
-        df = df.astype(float)
-        # print("reading Data end")
-        return df
+        # Plot
+        fig, ax = plt.subplots(subplot_kw={'projection': 'polar'}, figsize=set_size())
+        ax.errorbar(angles_rad, value, xerr=0, yerr=0, capsize=0.5,fmt=",", c="blue")
+
+        # Achsen-Einstellungen
+        ax.set_theta_zero_location('N')    # 0° ist oben
+        ax.set_theta_direction(-1)         # gegen den Uhrzeigersinn
+        ax.set_title("Cleaned value in \micro T", va='bottom')
+
+        # Labels außen, horizontal
+        label_radius = max(value) * 1.1
+        for angle, name in zip(angles_rad[:-1], sensor_names):  # ohne duplizierten Wert
+            ax.text(angle, label_radius, name, ha='center', va='center', fontsize=8)
+
+    # def set_Sensors_Of_Interest_And_Crop(self, sensor_names: dict, start: int, end: int):
+    #     """Pass dictionary conatining: Sensor Name : Noise Sensor Name
+    #     Sensors also will be cropped to the duration you want them to have"""
+    #     self.sensorsOfInterest = {}
+    #     sensor: DataSeries
+    #     for sensor in self.dataMeasurement.data_series_list:
+    #         if sensor.name in self.dataMeasurement.data_series_list:
+    #             key = 
+    #             self.sensorsOfInterest{}
+        
+    
+    # for noise treatment: subtract vector with 60 entries
+    def clearAllNoiseFromBFieldMeasurements(self):
+        """ subtracts mean - mean"""
+        sensor : DataSeries
+        for sensor in self.dataMeasurement.data_series_list:
+            self.dataMeasurement.get_series_by_name(sensor.name).physic_mean_Minus_meanNoise = self.noiseMeasurement.get_series_by_name(sensor.name).calculate_physic_mean() - self.dataMeasurement.get_series_by_name(sensor.name).calculate_physic_mean()
+        
+
+
+
     
     
 
@@ -102,17 +179,22 @@ class DynamicExperiment:
 # Test
 # filePath = r"Z:\09-Data\00-Thesis\00_TestBench_Ini\2025-05-13\\"
 # fileName = r"5A-FieldTest.lvm"
-filePath = r"Z:\09-Data\02-Hellen\Mesure_2021\2021_06_18\Stockio1_5\\"
-fileName = r"test.lvm"
-name = "test"
-testExperiment = DynamicExperiment(name, filePath, fileName, ".lvm")
-print(testExperiment.date)
-print(testExperiment.time)
-# print(TestExperiment.dataOnly[2].mean)
-series = testExperiment.measurement.get_series_by_name("S2_V4_C5_X_AI06")
-print(series.length)
-mean = testExperiment.measurement.get_Mean_Value_Of_DataSeries("S2_V4_C5_X_AI06")
-print(mean)
+# NoisePath = r"Z:\09-Data\00-Thesis\00_TestBench_Ini\2025-05-13\\"
+# NoiseFile = r"0A-FieldTest.lvm"
+# name = "5A-Test"
+# noiseName = "noise"
+# testExperiment = DynamicExperiment(name, filePath, fileName, "lvm", noiseName, NoisePath, NoiseFile, "lvm")
+# print(testExperiment.dataMeasurement.get_all_Names_RadialSensors())
+# print(testExperiment.dataMeasurement.get_all_Names_AxialSensors())
+
+# print(testExperiment.dataDate)
+# print(testExperiment.dataTime)
+# # print(TestExperiment.dataOnly[2].mean)
+# series = testExperiment.dataMeasurement.get_series_by_name("S2_V4_C5_X_AI06")
+# sensorMeanDict = testExperiment.compute_Noise_Mean_dict()
+# print(sensorMeanDict.values())
+# mean = testExperiment.dataMeasurement.get_Mean_Value_Of_DataSeries("S2_V4_C5_X_AI06")
+# print(mean)
 
 # print(TestExperiment.measurement.get_series_by_name("S2_V7_C8_X_AI02").get_Value(0))
 ########### Test
@@ -121,30 +203,3 @@ print(mean)
 # filenamenoiseCenter = "Ref_Bruit_Ambiant_FM_Aux_On_Centre_1.lvm"
 # filenamenoiseAR = "Ref_Bruit_Ambiant_FM_Aux_On_AR_1.lvm"
 
-
-# bFieldPath = r"C:\Users\Mein\tubCloud\01_France\04_Stage\00-Travail\03-PAC\Mesures 2020\CEA\2020_01_22\Stochio_1_5\Def_Stoch_1_5\\"
-
-# # call file name
-# filenameAR = 'Def_Stoch1_5_I48A_AR.lvm'                     ###!!!!!!!!-----------> Change here <-----------!!!!!!!!!!!!!!!!
-# filenameC = 'Def_Stoch1_5_I48A_Centre.lvm'                 ###!!!!!!!!-----------> Change here <-----------!!!!!!!!!!!!!!!!
-# filenameAV = 'Def_Stoch1_5_I48A_AV.lvm'                     ###!!!!!!!!-----------> Change here <-----------!!!!!!!!!!!!!!!!
-
-
-# TestExperiment = Experiment(2020, 50, "22.01.2020", 48, 100, noiseBFieldPath, filenamenoiseAV, filenamenoiseCenter,filenamenoiseAR, bFieldPath, filenameAV, filenameC, filenameAR)
-# TestExperiment.calculateCleanFields()
-
-## Humidity 2020_01_24 #####################################################################################
-# noiseBFieldPath = r'C:\Users\freiseml\Nextcloud\01_France\04_Stage\00-Travail\03-PAC\Mesures 2020\CEA\2020_01_24\Bruit\\'
-# filenamenoiseAV = "Ref_Bruit_Ambiant_FM_Aux_On_AV.lvm"
-# filenamenoiseCenter = "Ref_Bruit_Ambiant_FM_Aux_On_Centre.lvm"
-# filenamenoiseAR = "Ref_Bruit_Ambiant_FM_Aux_On_AR.lvm"
-
-# bFieldPath = r"C:\Users\freiseml\Nextcloud\01_France\04_Stage\00-Travail\03-PAC\Mesures 2020\CEA\2020_01_24\Humidite\\"
-# filenameAR = 'Def_Hum30_I50A_AR.lvm'                    ###!!!!!!!!-----------> Change here <-----------!!!!!!!!!!!!!!!!
-# filenameC = 'Def_Hum30_I50A_Centre.lvm'                 ###!!!!!!!!-----------> Change here <-----------!!!!!!!!!!!!!!!!
-# filenameAV = 'Def_Hum30_I50A_AV.lvm'                    ###!!!!!!!!-----------> Change here <-----------!!!!!!!!!!!!!!!!
-# year = 2020
-# scaleBFieldToFollowingCurrent = 50
-# investigatedCurrent = 50
-
-# testExperiment = Experiment(2020, "Humidity 30 %", "24.01.2020", 50, 50, noiseBFieldPath, filenamenoiseAV, filenamenoiseCenter,filenamenoiseAR, bFieldPath, filenameAV, filenameC, filenameAR)

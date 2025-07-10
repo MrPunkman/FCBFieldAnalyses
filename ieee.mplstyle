@@ -1,9 +1,12 @@
+# Updated by Florentin Salomez, 28/03/2025
 # Created by Florentin Salomez, 27/07/2020
 # Style sheet for IEEE Transactions 
 
 font.family : serif
+font.serif: Times New Roman, Cambria, DejaVu Serif
+mathtext.fontset : cm
 font.size    : 9.0
-text.usetex : True
+text.usetex : False
 
 axes.prop_cycle : cycler('linestyle', ['-', '--', '-.', ':', '-', '--', '-.', ':', '-', '--']) + cycler('color', ['1f77b4', 'ff7f0e', '2ca02c', 'd62728', '9467bd', '8c564b', 'e377c2', '7f7f7f', 'bcbd22', '17becf']) + cycler('marker', [' ', ' ', ' ', ' ', 'o', 's', '^', 'v', '1', '+'])
 
