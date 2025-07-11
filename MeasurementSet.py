@@ -276,7 +276,9 @@ class MeasurementSet:
         self.physic_mean_value_dict = {}
         for sensor in self.data_series_list:
             self.physic_mean_value_dict.update({sensor.name: sensor.calculate_physic_mean()})
-        return self.physic_mean_value_dict
+        return self.physic_mean_value_dict#
+    
+    
     
 
     def get_all_std_Values(self) -> dict:
@@ -372,9 +374,9 @@ class MeasurementSet:
         
             # Y- annotation
             if row == 0:
-                ax.set_ylabel("Magnetic Field [Y]")
+                ax.set_ylabel("Magnetic Field ($\mu$T)")
             else:
-                ax.set_ylabel("Magnetic Field [X]")
+                ax.set_ylabel("Magnetic Field ($\mu$T)")
 
                 # set y - limits
             if all_values_Y:
@@ -405,7 +407,15 @@ class MeasurementSet:
         
     def plot_voltage_measurement_over_time(self, sensorsOfInterest: list):
         """Plots the voltage over time """
-        pass      
+        voltageDataSeries = self.get_Voltage_data()
+        fig, ax = plt.subplots(1, 1, figsize=set_size())
+        for measurement in range(len(sensorsOfInterest)):
+            ax.plot(voltageDataSeries[measurement].values(), label = voltageDataSeries[measurement].name)
+        ax.set_ylim(0, max(voltageDataSeries[sensorsOfInterest].values())*1.1)
+        ax.set_ylabel("Tension in V")
+        ax.set_xlabel("Measurement Point ()")
+        ax.legend()
+              
 
 
     def plot_polar_Mean_fixed_sensors(self, sensor_names: list):

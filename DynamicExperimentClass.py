@@ -31,9 +31,10 @@ class DynamicExperiment:
         self.noiseDataFileName = noiseDataFileName
         self.noiseFileFormat = noiseFileFormat
         self.noiseName = noiseName
-        self.sensorsOfInterest: list
+        
         self.noiseMean: dict
         self.noise_Mean_physic: dict
+        self.physic_with_noise_mean_value_dict: dict
         self.physic_without_Noise_mean_value_dict : dict
         self.physic_mean_value_dict_scaled_to_current: dict
         self.scaleToCurrent: float
@@ -50,11 +51,25 @@ class DynamicExperiment:
         self.dataTime = self.dataMeasurement.metaInfo["Time"]
         self.noiseDate = self.noiseMeasurement.metaInfo["Date"]
         self.noiseTime = self.noiseMeasurement.metaInfo["Time"]
-
+        self.sensorsOfInterest = self.set_ini_all_sensors_of_interest()
     # ____________________________________________________________Start new Functions_____________________________________________________________________________________________
+    
+    def set_ini_all_sensors_of_interest(self) -> list:
+        self.sensorsOfInterest = self.dataMeasurement.get_all_Names_RadialSensors() + self.dataMeasurement.get_all_Names_AxialSensors()
+        return self.sensorsOfInterest
+
+    def get_all_magnetic_Field_mean_values_with_noise(self) -> dict:
+        """Compute and returns all magnetic field values containing noise"""
+        self.dataMeasurement.get_all_Physic_Mean_with_Noise_Values()
+        self.magnetic_Field_mean_values_with_noise = {}
+        for sensor in self.dataMeasurement.b_field_sensors:
+            if self.dataMeasurement.get_series_by_name(sensor).unit_name == "B":
+                self.magnetic_Field_mean_values_with_noise.update({self.dataMeasurement.get_series_by_name(sensor).name : self.dataMeasurement.get_series_by_name(sensor).calculate_physic_mean()})
+        return self.magnetic_Field_mean_values_with_noise
     
     def scale_Current_with_currentScaleFactor(self):
         if not hasattr(self, 'physic_without_Noise_mean_value_dict'): self.compute_Physic_Mean_minus_Noise_mean_Values()
+        # print(self.dataMeasurement.)
         self.physic_mean_value_dict_scaled_to_current = {}
         for sensor in self.physic_without_Noise_mean_value_dict:
             scaledValue = self.physic_without_Noise_mean_value_dict[sensor] * self.currentScaleFactor
@@ -64,7 +79,13 @@ class DynamicExperiment:
         self.noiseMean = self.noiseMeasurement.get_all_Mean_Values()
         return self.noiseMeasurement.get_all_Mean_Values()
     
+    def compute_physic_with_noise_mean_value_dict(self) -> dict:
+        """Returns all mean values with noise for all sensors"""
+        self.physic_with_noise_mean_value_dict = self.dataMeasurement.get_all_Physic_Mean_with_Noise_Values()
+        return self.physic_with_noise_mean_value_dict
+    
     def compute_Noise_Mean_Physic_dict(self) -> dict:
+        """Returns all noise mean values for all sensors"""
         self.noise_Mean_physic = self.noiseMeasurement.get_all_Physic_Mean_with_Noise_Values()
         return self.noiseMeasurement.get_all_Physic_Mean_with_Noise_Values()
     
@@ -81,15 +102,15 @@ class DynamicExperiment:
         sensor: DataSeries
         self.physic_without_Noise_mean_value_dict = {}
         for sensor in self.dataMeasurement.data_series_list:
-            print(sensor.name) 
+            # print(sensor.name) 
             if sensor.name in self.sensorsOfInterest:
-                print(sensor.name + " in list")
+                # print(sensor.name + " in list")
                 meanData = self.dataMeasurement.get_series_by_name(sensor.name).calculate_physic_mean()
-                print(meanData)
+                # print(meanData)
                 meanNoise = self.noiseMeasurement.get_series_by_name(sensor.name).calculate_physic_mean()
-                print(meanNoise)
+                # print(meanNoise)
                 value = meanData - meanNoise
-                print(value)
+                # print(value)
                 self.dataMeasurement.get_series_by_name(sensor.name).physic_mean_Minus_meanNoise = value 
                 self.physic_without_Noise_mean_value_dict.update({sensor.name: self.dataMeasurement.get_series_by_name(sensor.name).physic_mean_Minus_meanNoise})
             # else: print(sensor.name + " NOT in list")
@@ -151,15 +172,6 @@ class DynamicExperiment:
         for angle, name in zip(angles_rad[:-1], sensor_names):  # ohne duplizierten Wert
             ax.text(angle, label_radius, name, ha='center', va='center', fontsize=8)
 
-    # def set_Sensors_Of_Interest_And_Crop(self, sensor_names: dict, start: int, end: int):
-    #     """Pass dictionary conatining: Sensor Name : Noise Sensor Name
-    #     Sensors also will be cropped to the duration you want them to have"""
-    #     self.sensorsOfInterest = {}
-    #     sensor: DataSeries
-    #     for sensor in self.dataMeasurement.data_series_list:
-    #         if sensor.name in self.dataMeasurement.data_series_list:
-    #             key = 
-    #             self.sensorsOfInterest{}
         
     
     # for noise treatment: subtract vector with 60 entries

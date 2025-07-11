@@ -38,6 +38,11 @@ class DynamicInvestigation():
         self.faultyExperiment.scale_Current_with_currentScaleFactor()
         self.healthyExperiment.scale_Current_with_currentScaleFactor()
 
+    def noise_Comparison_by_ViolinPlot_for_specific_Sensor(self, sensorName):
+        healthy = self.healthyExperiment.noiseMeasurement.get_series_by_name(sensorName).convert_raw_to_data_series()
+        faulty = self.faultyExperiment.noiseMeasurement.get_series_by_name(sensorName).convert_raw_to_data_series()
+        data_array = [faulty.values()][healthy.values()]
+        sns.violinplot(data_array, split= True)
 
     def set_sensors_Of_Interest(self, sensorNamelist: list):
         self.sensorsOfInterest = sensorNamelist
@@ -72,6 +77,12 @@ class DynamicInvestigation():
         self.sensorMeanValuesFaulty_without_Noise = {}
         self.sensorMeanValuesFaulty_without_Noise = self.faultyExperiment.compute_Physic_Mean_minus_Noise_mean_Values()
         return self.sensorMeanValuesFaulty_without_Noise
+    
+    def compute_Healthy_sensors_mean_Values_without_Noise(self) -> dict:
+        """Compute Healthy (PointTwo)  mean values of the Sensors of interest without Noise."""
+        self.sensorMeanValuesHealthy_without_Noise = {}
+        self.sensorMeanValuesHealthy_without_Noise = self.healthyExperiment.compute_Physic_Mean_minus_Noise_mean_Values()
+        return self.sensorMeanValuesHealthy_without_Noise
     
     def compute_Differential_Mean_valeus(self):
         """Computes Faulty - Healthy. Therefore, we must first subtract the noise"""
@@ -126,6 +137,7 @@ class DynamicInvestigation():
             differntialValue = (self.sensorMeanValuesFaulty[sensorName] - self.sensorMeanValuesHealthy[sensorName])/2
             self.differential_Mean_Values_with_Noise.update({sensorName: differntialValue})
 
+
     def get_Sensor_positions_XY(self) -> dict:
         self.sensorPositions = {}
         for sensor in self.sensorsOfInterest:
@@ -161,11 +173,11 @@ class DynamicInvestigation():
             y.append(test[sensor][1])
         plt.scatter(x, y)
 
-    def plot_differential_Field_With_Noise(self):
+    def plot_Differential_Mean_valeus_with_Noise(self):
         """Plot Differential Data for not cleaned data. It is usefull when having two experiments with opposit current flow.
         Then, (10 A - (-10 A))/2 is plotted """
         if not hasattr(self, "differential_Mean_Values_with_Noise"): self.compute_Differential_Mean_valeus_with_Noise()
-        fig, ax = plt.subplots()
+        fig, ax = plt.subplots(figsize=set_size())
         ax.plot(self.differential_Mean_Values_with_Noise.keys(), self.differential_Mean_Values_with_Noise.values(), marker = ".")
         plt.xticks(rotation = 90)
         plt.ylabel("B-Field ($\mu$T)")
@@ -175,6 +187,8 @@ class DynamicInvestigation():
         bound = max(abs(low), abs(high))
         # set new limits
         plt.ylim(-bound, bound)
+
+    
 
     def plot_scaled_differential_field(self):
         """Plot Differential Data. Noise will be subtracted and faulty - healthy will be computed. Hence only the error is visible."""

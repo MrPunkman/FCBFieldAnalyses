@@ -49,7 +49,7 @@ class DataSeries:
 
             if self.name[-3:] == 'Rad' or self.name[-2:] == 'Ax':
                 self.unit_name = "B"
-                b_field = value*100*self.factor  # if +/- 2V 0 200 uT --> factor 100
+                b_field = value*100*self.factor  # if +/- 2V 0 200 muT --> factor 100
                 self.converted_Data[key] = b_field
 
             elif self.name[-2:] == '-I': 
@@ -154,7 +154,7 @@ class DataSeries:
             self.convert_raw_to_data_series()
         sns.violinplot(self.converted_Data.values())
 
-        pass
+        
 # Example usage:
 # time_series = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10]
 # data_values = [10, 12, 13, 11, 15, 14, 200, 16, 17, 12]  # 200 is an outlier
